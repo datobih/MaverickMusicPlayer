@@ -1,9 +1,11 @@
 package com.example.maverickmusicplayer.adapters
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.models.Album
@@ -20,7 +22,16 @@ class AlbumRecyclerAdapter(val context: Context, val albumList: ArrayList<Album>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.albumArt.setImageBitmap(albumList[position].art)
+        if(albumList[position].art!=null){
+
+            holder.albumArt.setImageBitmap(albumList[position].art)
+        }
+
+        else{
+            var drawable=context.resources.getDrawable(R.drawable.songs_placeholder)
+            holder.albumArt.setImageDrawable(drawable)
+        }
+
         holder.albumTitle.text=albumList[position].name
         holder.albumArtist.text=albumList[position].artist
 

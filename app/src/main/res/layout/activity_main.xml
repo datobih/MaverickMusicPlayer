@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
     android:orientation="vertical"
-    android:background="@drawable/theme_illustration">
+    android:background="@drawable/theme_illustration1"
+    >
 
 
 
@@ -22,9 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/navigation_menu"
+
         app:itemIconTint="@color/bottom_navi_icon"
         app:itemTextColor="@color/bottom_navi_icon"
-        android:background="#4C4C4C"
+        android:background="@drawable/transparent_rect"
         ></com.google.android.material.bottomnavigation.BottomNavigationView>
 
 

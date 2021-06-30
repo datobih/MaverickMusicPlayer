@@ -3,7 +3,7 @@
 <item
     android:id="@+id/nav_songs"
     android:title="Songs"
-    android:icon="@drawable/baseline_audiotrack_24"
+    android:icon="@drawable/ic_baseline_library_music_24"
 
 
     ></item>
@@ -12,5 +12,11 @@
         android:id="@+id/nav_albums"
         android:title="Albums"
         android:icon="@drawable/ic_baseline_album_24"
+        ></item>
+
+    <item
+        android:id="@+id/nav_artists"
+        android:title="Artists"
+        android:icon="@drawable/ic_artist"
         ></item>
 </menu>

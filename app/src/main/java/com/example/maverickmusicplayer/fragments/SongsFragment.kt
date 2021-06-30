@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
-import com.example.maverickmusicplayer.activities.DeviceMediaHandler
+import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.fragment_songs.*

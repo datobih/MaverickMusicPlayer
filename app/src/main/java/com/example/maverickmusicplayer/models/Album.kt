@@ -8,7 +8,7 @@ data class Album(
         val id: Long,
         val name:String,
         val artist:String,
-        val art:Bitmap,
+        val art:Bitmap?,
         val numberOfSongs:Int,
 
 

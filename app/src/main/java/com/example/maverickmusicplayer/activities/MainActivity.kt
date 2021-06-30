@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity() {
 
                     }
 
+                    R.id.nav_artists->{
+                        vp_main.currentItem=2
+                        return true
+                    }
+
                 }
                 return false
             }

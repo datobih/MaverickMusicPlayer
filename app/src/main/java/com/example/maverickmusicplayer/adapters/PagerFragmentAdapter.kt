@@ -5,11 +5,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.maverickmusicplayer.fragments.AlbumsFragment
+import com.example.maverickmusicplayer.fragments.ArtistFragment
 import com.example.maverickmusicplayer.fragments.SongsFragment
 
 class PagerFragmentAdapter(fragmentManager:FragmentManager,lifecycle: Lifecycle):FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun getItemCount(): Int {
-        return 2
+        return 3
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -17,8 +18,11 @@ class PagerFragmentAdapter(fragmentManager:FragmentManager,lifecycle: Lifecycle)
         if(position==0){
             return SongsFragment()
         }
+        if(position==1){
+            return AlbumsFragment()
+        }
 
-        return AlbumsFragment()
+        return ArtistFragment()
 
     }
 }

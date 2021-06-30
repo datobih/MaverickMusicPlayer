@@ -9,23 +9,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
-import com.example.maverickmusicplayer.activities.DeviceMediaHandler
+import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.adapters.AlbumRecyclerAdapter
 import com.example.maverickmusicplayer.models.Album
-import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.fragment_albums.*
+import kotlinx.android.synthetic.main.fragment_artist.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AlbumsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
+
 class AlbumsFragment : Fragment() {
 
     var task:AsyncTask<Void,Void,ArrayList<Album>>?=null

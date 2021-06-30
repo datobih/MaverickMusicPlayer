@@ -21,10 +21,18 @@ class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        var title=musicList[position].name
+        val title=musicList[position].name
 
 
-        holder.songCover.setImageBitmap(musicList[position].albumArt)
+        if(musicList[position].albumArt!=null){
+
+            holder.songCover.setImageBitmap(musicList[position].albumArt)
+        }
+
+        else{
+            var drawable=context.resources.getDrawable(R.drawable.songs_placeholder)
+            holder.songCover.setImageDrawable(drawable)
+        }
         holder.songTitle.text=title
         holder.songArtist.text=musicList[position].artist
 
