@@ -2,6 +2,7 @@ package com.example.maverickmusicplayer.handlers
 
 import android.content.ContentUris
 import android.content.Context
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
@@ -40,6 +41,9 @@ class DeviceMediaHandler(val context: Context) {
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.SIZE,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.DISPLAY_NAME
+
 
 
             )
@@ -47,6 +51,7 @@ class DeviceMediaHandler(val context: Context) {
     val songSelection = "${MediaStore.Audio.Media.DISPLAY_NAME} LIKE ?"
 
     val selectionArgs = arrayOf("%mp3")
+
 
 
     val albumProjection = arrayOf(
@@ -76,10 +81,39 @@ class DeviceMediaHandler(val context: Context) {
             }
 
 
-    fun getMediaFromDevice(): ArrayList<Music> {
+    fun getMediaFromDevice( album:String?,artist: String?): ArrayList<Music> {
+        var query:Cursor?=null
+var tempSelection=songSelection
+        var tempSelectionArgs=selectionArgs
+        if(!artist.isNullOrEmpty()){
+            tempSelection=   "${MediaStore.Audio.Media.DISPLAY_NAME} LIKE ? AND ${MediaStore.Audio.Media.ARTIST} LIKE ?"
+            tempSelectionArgs= arrayOf("%mp3",artist)
 
-        val query = context.contentResolver.query(collection, songProjection, songSelection, selectionArgs, null)
-        val musicList = ArrayList<Music>()
+
+
+        }
+
+        if(album!=null) {
+            val albumSongSelection =
+                "${MediaStore.Audio.Media.DISPLAY_NAME} LIKE ? AND ${MediaStore.Audio.Media.ALBUM} LIKE ?"
+            val albumSelectionArgs = arrayOf("%mp3", album)
+
+
+            query = context.contentResolver.query(collection, songProjection, albumSongSelection, albumSelectionArgs, null)
+
+        }
+
+        else {
+            query = context.contentResolver.query(
+                collection,
+                songProjection,
+               tempSelection,
+                tempSelectionArgs,
+                null
+            )
+
+        }
+            val musicList = ArrayList<Music>()
 
 
         query.use { cursor ->
@@ -102,6 +136,7 @@ class DeviceMediaHandler(val context: Context) {
                 val size = cursor.getInt(sizeColumn!!)
                 var artist = cursor.getString(artistColumn!!)
                 val pathData = cursor.getString(dataColumn!!)
+
                 val contentUri = ContentUris.withAppendedId(
                         MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         id
@@ -148,9 +183,16 @@ class DeviceMediaHandler(val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    fun getAlbums(): ArrayList<Album> {
+    fun getAlbums( artist:String?): ArrayList<Album> {
+        var tempSelection:String?=null
+        var tempSelectionArg:Array<String>?=null
+        if(!artist.isNullOrEmpty()){
+            tempSelection="${MediaStore.Audio.Albums.ARTIST} LIKE ?"
+             tempSelectionArg=arrayOf(artist)
 
-        var query = context.contentResolver.query(albumCollection, albumProjection, null, null, null)
+        }
+
+        var query = context.contentResolver.query(albumCollection, albumProjection, tempSelection, tempSelectionArg, null)
         val albumList = ArrayList<Album>()
         var bitmap: Bitmap? = null
 

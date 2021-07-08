@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="20dp"
     android:layout_marginLeft="3dp"
+    android:id="@+id/layout_item_album"
     >
 
 

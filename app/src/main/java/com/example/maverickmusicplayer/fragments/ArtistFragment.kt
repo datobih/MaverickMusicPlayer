@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.adapters.AlbumRecyclerAdapter
 import com.example.maverickmusicplayer.adapters.ArtistsRecyclerAdapter
+import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
+import com.example.maverickmusicplayer.interfaces.ArtistOnClickListener
 import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Artist
 import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.fragment_albums.*
 import kotlinx.android.synthetic.main.fragment_artist.*
-
-
+import kotlinx.android.synthetic.main.fragment_holder_artists.*
 
 
 class ArtistFragment : Fragment() {
@@ -52,6 +53,18 @@ class ArtistFragment : Fragment() {
                 super.onPostExecute(result)
                 var adapter= ArtistsRecyclerAdapter(requireContext(),result!!)
                 rv_artists.layoutManager= LinearLayoutManager(requireContext())
+                adapter.setOnArtistClicked(object:ArtistOnClickListener{
+                    override fun onItemClicked(artist: String) {
+                        var bundle=Bundle()
+                        bundle.putString(Constants.ARTIST_NAME_BUNDLE,artist)
+                        val artistLibrary=ArtistLibraryFragment()
+                        artistLibrary.arguments=bundle
+
+                        fragmentManager?.beginTransaction()?.replace(R.id.holder_artist_fragment,artistLibrary)?.commit()
+                    }
+
+                })
+
                 rv_artists.adapter=adapter
 
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.item_music.view.*
+import java.lang.StringBuilder
 
 class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>):RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() {
 
@@ -21,8 +22,13 @@ class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val title=musicList[position].name
+        var title=musicList[position].name
+       var sb=StringBuilder()
+        sb.append(title)
 
+        sb.replace((sb.toString().lastIndex)-3,sb.toString().length,"")
+
+        title=sb.toString()
 
         if(musicList[position].albumArt!=null){
 

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AlbumSongFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:background="@drawable/album_info_background"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+    <ImageView
+        android:id="@+id/imv_albumInfoCover"
+        android:layout_width="170dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/black"
+    ></ImageView>
+
+    <TextView
+        android:id="@+id/tv_albumInfoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="22dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:ellipsize="end"
+
+
+        ></TextView>
+
+
+    <TextView
+        android:id="@+id/tv_albumInfoArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="By"
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:singleLine="true"
+        android:ellipsize="end"
+
+
+
+
+        ></TextView>
+
+    <TextView
+        android:id="@+id/tv_albumInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tracks"
+        android:textSize="13dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:ellipsize="end"
+
+
+
+        ></TextView>
+
+
+</LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_albumSongs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        ></androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+</FrameLayout>

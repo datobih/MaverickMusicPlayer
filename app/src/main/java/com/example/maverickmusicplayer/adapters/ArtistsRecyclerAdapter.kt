@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
+import com.example.maverickmusicplayer.interfaces.ArtistOnClickListener
 import com.example.maverickmusicplayer.models.Artist
-import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.item_artist.view.*
-import kotlinx.android.synthetic.main.item_music.view.*
 
 class ArtistsRecyclerAdapter(val context: Context, val artistList:ArrayList<Artist>):RecyclerView.Adapter<ArtistsRecyclerAdapter.ViewHolder>() {
 
 
-
+var artistOnClickListener:ArtistOnClickListener?=null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_artist,parent,false))
@@ -23,6 +22,7 @@ class ArtistsRecyclerAdapter(val context: Context, val artistList:ArrayList<Arti
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var track="Tracks"
+        var album="Albums"
         var title=artistList[position].name
 
 
@@ -41,9 +41,17 @@ class ArtistsRecyclerAdapter(val context: Context, val artistList:ArrayList<Arti
         if(artistList[position].noOfTracks<=1){
             track="Track"
         }
+        if(artistList[position].noOfAlbums<=1){
+            album="Album"
+        }
 
-        holder.songArtist.text="${artistList[position].noOfTracks} ${track}| ${artistList[position].noOfAlbums} Albums"
+        holder.artistContentCount.text="${artistList[position].noOfTracks} ${track}| ${artistList[position].noOfAlbums} ${album}"
 
+        holder.artistLayout.setOnClickListener {
+        artistOnClickListener?.onItemClicked(artistList[position].name)
+
+
+        }
 
 
     }
@@ -52,12 +60,17 @@ class ArtistsRecyclerAdapter(val context: Context, val artistList:ArrayList<Arti
       return artistList.size
     }
 
+    fun setOnArtistClicked(mArtistOnClickListener: ArtistOnClickListener){
+        this.artistOnClickListener=mArtistOnClickListener
+
+    }
+
 
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         var artistTitle=view.tv_artistTitle
         var artCover=view.imv_artistCover
-        var songArtist=view.tv_artistContentCount
-
+        var artistContentCount=view.tv_artistContentCount
+        var artistLayout=view.layout_item_artist
 
     }
 

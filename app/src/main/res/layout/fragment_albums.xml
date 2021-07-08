@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.AlbumsFragment"
+
     >
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,7 +12,28 @@
       android:id="@+id/rv_albums"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-
+      android:visibility="gone"
+      tools:visibility="visible"
       ></androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/ll_albumLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#8B000000"
+        android:gravity="center"
+
+        >
+        <ProgressBar
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:indeterminateDrawable="@drawable/fade_progress_bar"
+
+            ></ProgressBar>
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

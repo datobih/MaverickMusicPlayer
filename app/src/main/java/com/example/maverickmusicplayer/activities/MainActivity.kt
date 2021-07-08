@@ -1,21 +1,14 @@
 package com.example.maverickmusicplayer.activities
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.animation.AnimationUtils
-import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.maverickmusicplayer.R
-import com.example.maverickmusicplayer.adapters.Constants
+import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
-import com.example.maverickmusicplayer.fragments.AlbumsFragment
-import com.example.maverickmusicplayer.fragments.SongsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_music.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +69,9 @@ class MainActivity : AppCompatActivity() {
 
 
         })
+
+        vp_main.currentItem=1
+        vp_main.currentItem=0
 
     }
 
