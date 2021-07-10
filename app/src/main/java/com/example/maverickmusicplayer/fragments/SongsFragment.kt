@@ -1,5 +1,6 @@
 package com.example.maverickmusicplayer.fragments
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.*
@@ -7,12 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
+import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.adapters.AlbumRecyclerAdapter
 import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
 import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
@@ -46,6 +49,7 @@ class SongsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 val dialog:Dialog= Dialog(requireContext())
         task=object :AsyncTask<Void,Void,ArrayList<Music>>(){
 
@@ -53,7 +57,7 @@ val dialog:Dialog= Dialog(requireContext())
                 super.onPreExecute()
             ll_songLoading.visibility=View.VISIBLE
             rv_songs.visibility=View.GONE
-
+            tv_songHeader.visibility=View.GONE
 
 
             }
@@ -69,16 +73,18 @@ val dialog:Dialog= Dialog(requireContext())
            override fun onPostExecute(result: ArrayList<Music>?) {
                super.onPostExecute(result)
                musicList=result!!
+
+               (activity as MainActivity).setPlayingAdapter(musicList)
                Constants.dismissDialog(dialog)
+               (activity as MainActivity).vp_songPlaying.visibility=View.VISIBLE
                refreshSongs()
                ll_songLoading.visibility=View.GONE
                rv_songs.visibility=View.VISIBLE
-
+                tv_songHeader.visibility=View.VISIBLE
            }
 
 
        }.execute()
-
 
 
 

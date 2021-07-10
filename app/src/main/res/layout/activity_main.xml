@@ -9,6 +9,16 @@
     android:background="@drawable/theme_illustration1"
     >
 
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar_main"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="#00FFFFFF"
+
+app:titleTextColor="@color/white"
+   android:theme="@style/ToolBarTheme"
+    android:visibility="gone"
+    ></androidx.appcompat.widget.Toolbar>
 
 
 
@@ -20,6 +30,19 @@
         android:layout_weight="1"
         ></androidx.viewpager2.widget.ViewPager2>
 
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_songPlaying"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:visibility="gone"
+        ></androidx.viewpager2.widget.ViewPager2>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        ></View>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -30,7 +53,6 @@
         app:itemTextColor="@color/bottom_navi_icon"
         android:background="@drawable/transparent_rect"
         ></com.google.android.material.bottomnavigation.BottomNavigationView>
-
 
 
 

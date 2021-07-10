@@ -47,7 +47,7 @@ class AlbumsFragment : Fragment() {
                 super.onPreExecute()
                 ll_albumLoading.visibility=View.VISIBLE
                 rv_albums.visibility=View.GONE
-
+                tv_albumHeader.visibility=View.GONE
 
 
             }
@@ -105,7 +105,7 @@ class AlbumsFragment : Fragment() {
                 rv_albums.adapter = adapter
                 ll_albumLoading.visibility=View.GONE
                 rv_albums.visibility=View.VISIBLE
-
+                tv_albumHeader.visibility=View.VISIBLE
 
             }
 

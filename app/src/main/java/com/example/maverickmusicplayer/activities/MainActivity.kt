@@ -3,10 +3,13 @@ package com.example.maverickmusicplayer.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
+import com.example.maverickmusicplayer.fragments.PagerSongPlaying
+import com.example.maverickmusicplayer.models.Music
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,6 +19,16 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_main)
+
+
+      setSupportActionBar(toolbar_main)
+        if(supportActionBar!=null){
+
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+        }
 
 
 
@@ -75,7 +88,15 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+fun setPlayingAdapter(musicList:ArrayList<Music>){
 
+
+
+    var adapter= PagerSongPlaying(this,musicList)
+    vp_songPlaying.adapter=adapter
+
+
+}
 
 
         /*

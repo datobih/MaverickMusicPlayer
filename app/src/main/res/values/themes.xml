@@ -22,7 +22,10 @@
     </style>
 
 
+    <style name="ToolBarTheme" parent="Theme.MaterialComponents">
+        <item
+            name="colorControlNormal">@color/white</item>
 
 
-
+    </style>
 </resources>
