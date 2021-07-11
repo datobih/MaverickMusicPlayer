@@ -22,6 +22,7 @@ import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.interfaces.AlbumOnClickListener
+import com.example.maverickmusicplayer.interfaces.SongOnClickListener
 import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.activity_main.*
@@ -74,9 +75,8 @@ val dialog:Dialog= Dialog(requireContext())
                super.onPostExecute(result)
                musicList=result!!
 
-               (activity as MainActivity).setPlayingAdapter(musicList)
                Constants.dismissDialog(dialog)
-               (activity as MainActivity).vp_songPlaying.visibility=View.VISIBLE
+
                refreshSongs()
                ll_songLoading.visibility=View.GONE
                rv_songs.visibility=View.VISIBLE
@@ -99,6 +99,17 @@ val dialog:Dialog= Dialog(requireContext())
         var songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList)
         rv_songs.layoutManager = LinearLayoutManager(requireContext())
         rv_songs.adapter = songsRecyclerAdapter
+
+        songsRecyclerAdapter.setOnSongClicked(object:SongOnClickListener{
+            override fun onItemClicked(position: Int) {
+
+                (rv_songs.adapter as SongsRecyclerAdapter).notifyDataSetChanged()
+                (activity as MainActivity).vp_songPlaying.setCurrentItem(position,false)
+            }
+
+
+        })
+
     }
 
 

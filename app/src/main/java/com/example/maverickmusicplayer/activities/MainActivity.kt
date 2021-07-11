@@ -1,5 +1,6 @@
 package com.example.maverickmusicplayer.activities
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -14,6 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    var mediaPlayer:MediaPlayer?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +32,9 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+
+
+        mediaPlayer=MediaPlayer()
 
 
 
@@ -50,7 +56,26 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+vp_songPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
 
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+    if(mediaPlayer!!.isPlaying){
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer=null
+    }
+    mediaPlayer= MediaPlayer()
+
+        mediaPlayer?.setDataSource(this@MainActivity,(vp_songPlaying.adapter as PagerSongPlaying).musicList[position].uri!!)
+
+        mediaPlayer?.prepare()
+        mediaPlayer?.start()
+
+
+    }
+
+})
 
         bottom_navigation.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -97,6 +122,10 @@ fun setPlayingAdapter(musicList:ArrayList<Music>){
 
 
 }
+
+
+
+
 
 
         /*
