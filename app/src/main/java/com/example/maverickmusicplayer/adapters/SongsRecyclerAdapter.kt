@@ -10,6 +10,7 @@ import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.interfaces.SongOnClickListener
 import com.example.maverickmusicplayer.models.Music
+import com.example.maverickmusicplayer.models.PlaybackThread
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_music.view.*
 import java.lang.StringBuilder
@@ -51,25 +52,30 @@ var songOnClickListener:SongOnClickListener?=null
 
         holder.songLayout.setOnClickListener {
 
-            if(connected==false){
+
               if(context is MainActivity){
                   context.setPlayingAdapter(musicList)
-                    context.vp_songPlaying.visibility=View.VISIBLE
-
-                  connected=true
-              }
-            }
+                    context.ll_songPlaying.visibility=View.VISIBLE
 
 
 
-            if(connected==true){
 
                 songOnClickListener!!.onItemClicked(position)
 
 
+/*
+                  if(context.playbackThread!=null){
+                      context.playbackThread?.stop()
+                      context.playbackThread?.destroy()
+                      context.playbackThread=null
+                  }
+                  context.playbackThread =Thread(PlaybackThread(context,musicList,position))
+                  context.playbackThread?.start()
 
 
-                if(context is MainActivity){
+ */
+
+                  /*
                     if(context.mediaPlayer!!.isPlaying){
                         context.mediaPlayer?.stop()
                         context.mediaPlayer?.release()
@@ -80,7 +86,9 @@ var songOnClickListener:SongOnClickListener?=null
                     context.mediaPlayer?.prepare()
                     context.mediaPlayer?.start()
 
-                }
+
+
+                   */
 
             }
 

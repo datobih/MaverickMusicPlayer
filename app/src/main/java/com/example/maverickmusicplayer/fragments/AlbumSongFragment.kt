@@ -10,11 +10,14 @@ import androidx.core.content.ContentProviderCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
+import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
+import com.example.maverickmusicplayer.interfaces.SongOnClickListener
 import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Music
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_album_song.*
 import kotlinx.android.synthetic.main.fragment_songs.*
 
@@ -81,7 +84,24 @@ class AlbumSongFragment : Fragment() {
     fun refreshSongs() {
         var songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList)
         rv_albumSongs.layoutManager = LinearLayoutManager(requireContext())
+
+
+
         rv_albumSongs.adapter = songsRecyclerAdapter
+
+
+        songsRecyclerAdapter.setOnSongClicked(object: SongOnClickListener {
+            override fun onItemClicked(position: Int) {
+
+                (rv_albumSongs.adapter as SongsRecyclerAdapter).notifyDataSetChanged()
+                (activity as MainActivity).vp_songPlaying.setCurrentItem(position,false)
+            }
+
+
+        })
+
+
+
     }
 
 }

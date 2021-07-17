@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,14 @@
     android:orientation="vertical"
     android:background="@drawable/theme_illustration1"
     >
+
+
+    <LinearLayout
+        android:id="@+id/ll_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
 <androidx.appcompat.widget.Toolbar
     android:id="@+id/toolbar_main"
@@ -30,13 +38,39 @@ app:titleTextColor="@color/white"
         android:layout_weight="1"
         ></androidx.viewpager2.widget.ViewPager2>
 
+<LinearLayout
+    android:id="@+id/ll_songPlaying"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/transparent_rect"
+android:visibility="gone"
+    >
+
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_songPlaying"
-        android:layout_width="match_parent"
+        android:layout_width="330dp"
         android:layout_height="70dp"
-        android:visibility="gone"
+
         ></androidx.viewpager2.widget.ViewPager2>
+
+
+
+
+
+
+    <ImageButton
+        android:id="@+id/imb_pause_play"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/baseline_pause_24"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        ></ImageButton>
+
+</LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -54,6 +88,130 @@ app:titleTextColor="@color/white"
         android:background="@drawable/transparent_rect"
         ></com.google.android.material.bottomnavigation.BottomNavigationView>
 
+    </LinearLayout>
 
 
-</LinearLayout>
+<RelativeLayout
+    android:id="@+id/ll_nowPlaying"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:visibility="gone"
+    tools:visibility="visible"
+    android:background="@drawable/now_playing_theme"
+    >
+
+    <ImageButton
+        android:id="@+id/imb_closeNowPlaying"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
+
+        android:layout_gravity="start"
+        ></ImageButton>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_nowPlaying"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+android:layout_below="@id/imb_closeNowPlaying"
+
+        android:layout_gravity="center_horizontal"
+        ></androidx.viewpager2.widget.ViewPager2>
+
+
+
+    <TextView
+        android:id="@+id/tv_nowPlaying_songTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="HIIIII"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="23dp"
+        android:textStyle="bold"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollHorizontally="true"
+        android:layout_below="@id/vp_nowPlaying"
+
+        ></TextView>
+
+
+
+    <TextView
+        android:id="@+id/tv_nowPlaying_songArtist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="HIIIII"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+android:layout_below="@id/tv_nowPlaying_songTitle"
+        ></TextView>
+
+
+    <SeekBar
+        android:id="@+id/sb_nowPlaying"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+
+android:layout_below="@id/tv_nowPlaying_songArtist"
+        ></SeekBar>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+android:layout_marginBottom="50dp"
+
+    android:layout_alignParentBottom="true"
+
+    >
+<ImageButton
+    android:id="@+id/imb_nowPlaying_skipPrevious"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:background="@drawable/baseline_skip_previous_24"
+    android:layout_marginTop="20dp"
+    android:layout_alignParentLeft="true"
+    android:layout_marginLeft="60dp"
+    ></ImageButton>
+
+    <ImageButton
+        android:id="@+id/imb_nowPlaying_pausePlay"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/baseline_pause_24"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        ></ImageButton>
+
+
+    <ImageButton
+        android:id="@+id/imb_nowPlaying_skipNext"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/baseline_skip_next_24"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="60dp"
+        ></ImageButton>
+
+
+</RelativeLayout>
+
+
+
+
+</RelativeLayout>
+
+</FrameLayout>

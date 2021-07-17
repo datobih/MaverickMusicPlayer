@@ -105,6 +105,14 @@ val dialog:Dialog= Dialog(requireContext())
 
                 (rv_songs.adapter as SongsRecyclerAdapter).notifyDataSetChanged()
                 (activity as MainActivity).vp_songPlaying.setCurrentItem(position,false)
+
+
+
+                (activity as MainActivity).tv_nowPlaying_songTitle.text=musicList[position].name
+                (activity as MainActivity).tv_nowPlaying_songTitle.isSelected=true
+                (activity as MainActivity).tv_nowPlaying_songArtist.text=musicList[position].artist
+
+
             }
 
 

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/transparent_rect">
+    android:id="@+id/ll_item_songPlaying"
+  >
 
     <ImageView
         android:id="@+id/imv_playing_songCover"
@@ -56,12 +57,5 @@
     </LinearLayout>
 
 
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/baseline_play_arrow_24"
-android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        ></ImageButton>
 
 </LinearLayout>
