@@ -28,4 +28,10 @@
 
 
     </style>
+
+    <style name="customProgressBar" parent="Theme.MaterialComponents">
+
+        <item name="colorControlActivated">@color/white</item>
+
+    </style>
 </resources>

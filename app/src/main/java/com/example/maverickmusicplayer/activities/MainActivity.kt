@@ -1,31 +1,45 @@
 package com.example.maverickmusicplayer.activities
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
 import android.view.View
+import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.maverickmusicplayer.R
-import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
 import com.example.maverickmusicplayer.adapters.PagerNowPlaying
 import com.example.maverickmusicplayer.adapters.PagerSongPlaying
+import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.interfaces.SongPlayingOnClickListener
 import com.example.maverickmusicplayer.models.Music
 import com.example.maverickmusicplayer.models.PlaybackThread
+import com.example.maverickmusicplayer.utils.BlurBuilder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
-    var mediaPlayer:MediaPlayer?=null
+
     var playbackThread:PlaybackThread?=null
     var isPaused=false
     var change=true
+    var check=false
+    var isInit=true
+    var repeat='p'
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,8 +49,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-        mediaPlayer=MediaPlayer()
 
 
 
@@ -50,40 +62,49 @@ imb_closeNowPlaying.setOnClickListener {
 }
         imb_pause_play.setOnClickListener {
 
-            if(isPaused==false){
-                imb_pause_play.background=ContextCompat.getDrawable(this,R.drawable.baseline_play_arrow_24)
-                isPaused=true
-                playbackThread?.isPaused=true
-                mediaPlayer!!.pause()
-
-
-            }
-
-            else{
-                imb_pause_play.background=ContextCompat.getDrawable(this,R.drawable.baseline_pause_24)
-                isPaused=false
-                mediaPlayer!!.start()
-                playbackThread?.isPaused=false
-
-
-
-
-
-
-
-
-            }
+          setPause()
 
 
 
         }
 
+        imb_nowPlaying_pausePlay.setOnClickListener {
+            setPause()
+        }
 
-        var adapter=PagerFragmentAdapter(supportFragmentManager,lifecycle)
+        imb_nowPlaying_skipNext.setOnClickListener {
+            check=true
+            vp_nowPlaying.currentItem=(vp_nowPlaying.currentItem)+1
+
+        }
+
+        imb_nowPlaying_skipPrevious.setOnClickListener{
+            vp_nowPlaying.currentItem=(vp_nowPlaying.currentItem)-1
+        }
+
+        imb_nowPlaying_repeat.setOnClickListener {
+            if(repeat=='p'){
+                repeat='r'
+                imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_red_24)
+            }
+            else if(repeat=='r'){
+                repeat='R'
+                imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_one_24)
+            }
+            else if(repeat=='R'){
+                repeat='p'
+                imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_24)
+            }
+
+
+        }
+
+
+        var adapter=PagerFragmentAdapter(supportFragmentManager, lifecycle)
         vp_main.adapter=adapter
         vp_main.isUserInputEnabled=false
 
-        vp_main.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        vp_main.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
@@ -94,9 +115,7 @@ imb_closeNowPlaying.setOnClickListener {
 
 
 
-vp_songPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
-
-
+vp_songPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -108,21 +127,31 @@ vp_songPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallb
 
     override fun onPageSelected(position: Int) {
         super.onPageSelected(position)
-        if(change==true) {
-            if (playbackThread != null) {
+        if (change == true) {
 
-                playbackThread?.interrupt()
-                playbackThread?.stopp = true
+if(isInit==true){
+    playbackThread = PlaybackThread(
+            this@MainActivity
+    )
+playbackThread!!.musicList=(vp_songPlaying.adapter as PagerSongPlaying).musicList
+    playbackThread!!.position=position
+    playbackThread?.start()
 
-                while(playbackThread!!.isAlive){
+    isInit=false
+}
+            else{
+                playbackThread!!.reset=true
+    playbackThread!!.musicList=(vp_songPlaying.adapter as PagerSongPlaying).musicList
+    playbackThread!!.position=position
 
-                }
-                playbackThread = null
+
+
+
 
             }
-            playbackThread = PlaybackThread(this@MainActivity, (vp_songPlaying.adapter as PagerSongPlaying).musicList, position)
 
-            playbackThread?.start()
+
+
 
             /*
             if (isPaused == true) {
@@ -133,28 +162,84 @@ vp_songPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallb
 
         }
 
-
-
     }
 
 
 
 })
 
+sb_nowPlaying.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        val currentDurationMillis = sb_nowPlaying.progress
 
-vp_nowPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        val currentDurationMins = (currentDurationMillis / 1000) / 60
+        val currentDurationSecs = (currentDurationMillis / 1000) % 60
+        if (currentDurationSecs < 10) {
+            runOnUiThread { tv_nowPlaying_currentDuration.text = "${currentDurationMins.toString()}:0${currentDurationSecs.toString()}" }
+        } else {
+            runOnUiThread { tv_nowPlaying_currentDuration.text = "${currentDurationMins.toString()}:${currentDurationSecs.toString()}" }
+        }
+    }
+
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+       playbackThread?.onTap=true
+
+    }
+
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+        playbackThread?.mediaPlayer?.seekTo(sb_nowPlaying.progress)
+        playbackThread?.onTap=false
+    }
+
+
+})
+
+
+vp_nowPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
     override fun onPageSelected(position: Int) {
         super.onPageSelected(position)
 
-        tv_nowPlaying_songTitle.text=(vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].name
-        tv_nowPlaying_songArtist.text=(vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].artist
-        vp_songPlaying.currentItem=position
+        tv_nowPlaying_songTitle.text =
+            (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].name
+        tv_nowPlaying_songArtist.text =
+            (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].artist
+        val totalDurationMillis=(vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].duration
+        var totalDurationMins=(totalDurationMillis/1000)/60
+        var totalDurationSecs=((totalDurationMillis/1000)%60)
+
+        if(totalDurationSecs<10) {
+            tv_nowPlaying_totalDuration.text = "${totalDurationMins.toString()}:0${totalDurationSecs.toString()}"
+        }
+        else{
+            tv_nowPlaying_totalDuration.text = "${totalDurationMins.toString()}:${totalDurationSecs.toString()}"
+        }
+
+        var sampleArt = (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].albumArt
+
+        if (sampleArt != null) {
+            sampleArt = BlurBuilder.blur(this@MainActivity, sampleArt)
+            sampleArt=darkenBitMap(sampleArt)
+            var bitmapDrawable = BitmapDrawable(sampleArt)
+            ll_nowPlaying.background = bitmapDrawable
+
+
+        } else {
+            ll_nowPlaying.background = ContextCompat.getDrawable(
+                this@MainActivity,
+                R.drawable.now_playing_theme
+            )
+        }
+
+
+        vp_songPlaying.setCurrentItem(position,false)
     }
 
 })
 
 
-        bottom_navigation.setOnNavigationItemSelectedListener(object : BottomNavigationView.OnNavigationItemSelectedListener {
+        bottom_navigation.setOnNavigationItemSelectedListener(object :
+            BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
 
@@ -162,19 +247,19 @@ vp_nowPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallba
 
                     R.id.nav_songs -> {
 
-                    vp_main.currentItem=0
+                        vp_main.currentItem = 0
                         return true
                     }
 
                     R.id.nav_albums -> {
 
-                        vp_main.currentItem=1
+                        vp_main.currentItem = 1
                         return true
 
                     }
 
-                    R.id.nav_artists->{
-                        vp_main.currentItem=2
+                    R.id.nav_artists -> {
+                        vp_main.currentItem = 2
                         return true
                     }
 
@@ -190,19 +275,22 @@ vp_nowPlaying.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallba
 
     }
 
-fun setPlayingAdapter(musicList:ArrayList<Music>){
+fun setPlayingAdapter(musicList: ArrayList<Music>){
 
 
 
-    var adapter= PagerSongPlaying(this,musicList)
+    var adapter= PagerSongPlaying(this, musicList)
 
-    adapter.setSongPlayingOnClickListener(object :SongPlayingOnClickListener{
+    adapter.setSongPlayingOnClickListener(object : SongPlayingOnClickListener {
         override fun onItemClicked(position: Int) {
-            ll_nowPlaying.visibility= View.VISIBLE
-            ll_main.visibility=View.GONE
-            var adapter=PagerNowPlaying(this@MainActivity,(vp_songPlaying.adapter as PagerSongPlaying).musicList)
-            vp_nowPlaying.adapter=adapter
-            vp_nowPlaying.setCurrentItem(position,false)
+            ll_nowPlaying.visibility = View.VISIBLE
+            ll_main.visibility = View.GONE
+            var adapter = PagerNowPlaying(
+                this@MainActivity,
+                (vp_songPlaying.adapter as PagerSongPlaying).musicList
+            )
+            vp_nowPlaying.adapter = adapter
+            vp_nowPlaying.setCurrentItem(position, false)
 
         }
 
@@ -212,6 +300,48 @@ fun setPlayingAdapter(musicList:ArrayList<Music>){
 
 
 }
+
+    fun setPause(){
+
+        if(isPaused==false){
+            imb_pause_play.background=ContextCompat.getDrawable(
+                    this,
+                    R.drawable.baseline_play_arrow_24
+            )
+            imb_nowPlaying_pausePlay.background=ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_baseline_play_circle_filled_24
+            )
+
+            isPaused=true
+            playbackThread?.isPaused=true
+            playbackThread?.mediaPlayer!!.pause()
+
+
+        }
+
+        else{
+            imb_pause_play.background=ContextCompat.getDrawable(
+                    this,
+                    R.drawable.baseline_pause_24
+            )
+            imb_nowPlaying_pausePlay.background=ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_baseline_pause_circle_filled_24
+            )
+            isPaused=false
+            playbackThread?.mediaPlayer!!.start()
+            playbackThread?.isPaused=false
+
+
+
+
+
+
+
+
+        }
+    }
 
     override fun onBackPressed() {
 
@@ -245,7 +375,14 @@ fun setPlayingAdapter(musicList:ArrayList<Music>){
      */
 
     }
-    fun changePageWithoutCallBack(position:Int){
+    fun updateMusicProgress() {
+        var handler = Handler(Looper.getMainLooper())
+        handler.post {
+            sb_nowPlaying.progress=playbackThread?.mediaPlayer!!.currentPosition
+
+        }
+    }
+    fun changePageWithoutCallBack(position: Int){
         change=false
         var handler=Handler(Looper.getMainLooper())
         handler.post {
@@ -258,31 +395,19 @@ fun setPlayingAdapter(musicList:ArrayList<Music>){
 
 
     }
-    fun initMediaPlayer(musicList: ArrayList<Music>,position: Int){
-
-        val handler=Handler(Looper.getMainLooper())
-        handler.post {
-if(mediaPlayer!=null) {
-    mediaPlayer?.stop()
-    mediaPlayer?.release()
-    mediaPlayer = null
-}
-
-            mediaPlayer = MediaPlayer()
-            mediaPlayer?.setDataSource(this, musicList[position].uri!!)
-            mediaPlayer?.prepare()
-            if(isPaused==false){
-                changePageWithoutCallBack(position)
 
 
-
-
-                mediaPlayer?.start()
-            }
-        }
-
+    private fun darkenBitMap(bm: Bitmap): Bitmap? {
+        val canvas = Canvas(bm)
+        canvas.drawARGB(100, 0, 0, 0)
+        canvas.drawBitmap(bm, Matrix(), Paint())
+        return bm
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
 
 
+
+    }
 }

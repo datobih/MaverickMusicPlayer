@@ -97,7 +97,7 @@ android:visibility="gone"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="10dp"
     android:visibility="gone"
     tools:visibility="visible"
     android:background="@drawable/now_playing_theme"
@@ -115,7 +115,7 @@ android:visibility="gone"
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_nowPlaying"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="450dp"
 android:layout_below="@id/imb_closeNowPlaying"
 
         android:layout_gravity="center_horizontal"
@@ -130,7 +130,7 @@ android:layout_below="@id/imb_closeNowPlaying"
         android:layout_marginTop="40dp"
         android:text="HIIIII"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="#EAEAEA"
         android:textSize="23dp"
         android:textStyle="bold"
         android:singleLine="true"
@@ -149,65 +149,132 @@ android:layout_below="@id/imb_closeNowPlaying"
         android:id="@+id/tv_nowPlaying_songArtist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="HIIIII"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="#EAEAEA"
         android:textSize="17dp"
 android:layout_below="@id/tv_nowPlaying_songTitle"
         ></TextView>
+
+    <TextView
+        android:id="@+id/tv_nowPlaying_currentDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="0:00"
+
+        android:textColor="#EAEAEA"
+        android:textSize="14dp"
+
+        android:layout_below="@id/tv_nowPlaying_songArtist"
+
+        ></TextView>
+
+
+    <TextView
+        android:id="@+id/tv_nowPlaying_totalDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="2:50"
+        android:gravity="right"
+        android:layout_marginRight="15dp"
+        android:textColor="#EAEAEA"
+        android:textSize="14dp"
+
+        android:layout_below="@id/tv_nowPlaying_songArtist"
+
+        ></TextView>
+
 
 
     <SeekBar
         android:id="@+id/sb_nowPlaying"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
+        android:progressBackgroundTint="@color/white"
 
-android:layout_below="@id/tv_nowPlaying_songArtist"
+android:layout_below="@id/tv_nowPlaying_currentDuration"
+        android:thumbTint="@color/white"
+
+        android:progressTint="#EFEFEF"
         ></SeekBar>
 
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
-android:layout_marginBottom="50dp"
+android:layout_marginBottom="70dp"
 
     android:layout_alignParentBottom="true"
 
     >
 <ImageButton
     android:id="@+id/imb_nowPlaying_skipPrevious"
-    android:layout_width="70dp"
-    android:layout_height="70dp"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
     android:background="@drawable/baseline_skip_previous_24"
-    android:layout_marginTop="20dp"
-    android:layout_alignParentLeft="true"
-    android:layout_marginLeft="60dp"
+
+
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toTopOf="@id/imb_nowPlaying_pausePlay"
+    app:layout_constraintBottom_toBottomOf="@id/imb_nowPlaying_pausePlay"
+    android:layout_marginLeft="70dp"
     ></ImageButton>
 
     <ImageButton
         android:id="@+id/imb_nowPlaying_pausePlay"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/baseline_pause_24"
-        android:layout_marginTop="20dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ic_baseline_pause_circle_filled_24"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
+        app:layout_constraintLeft_toRightOf="@id/imb_nowPlaying_skipPrevious"
+        app:layout_constraintRight_toLeftOf="@id/imb_nowPlaying_skipNext"
+        app:layout_constraintTop_toTopOf="parent"
+
+
         ></ImageButton>
 
 
     <ImageButton
         android:id="@+id/imb_nowPlaying_skipNext"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/baseline_skip_next_24"
-        android:layout_marginTop="20dp"
+
         android:layout_alignParentRight="true"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="70dp"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imb_nowPlaying_pausePlay"
+        app:layout_constraintBottom_toBottomOf="@id/imb_nowPlaying_pausePlay"
+
+        android:layout_marginLeft="70dp"
         ></ImageButton>
 
 
-</RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/imb_nowPlaying_repeat"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/ic_baseline_repeat_24"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+       app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        android:layout_marginLeft="70dp"
+        ></ImageButton>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
