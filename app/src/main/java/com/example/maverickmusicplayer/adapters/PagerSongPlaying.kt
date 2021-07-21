@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
+import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.interfaces.SongPlayingOnClickListener
 import com.example.maverickmusicplayer.models.Music
+import kotlinx.android.synthetic.main.fragment_songs.*
 import kotlinx.android.synthetic.main.item_song_playing.view.*
 import java.lang.StringBuilder
 
@@ -40,7 +42,11 @@ var songPlayingOnClickListener:SongPlayingOnClickListener?=null
 holder.songTitle.isSelected=true
 
         holder.songLayout.setOnClickListener {
-            songPlayingOnClickListener?.onItemClicked(position)
+            if (context is MainActivity) {
+
+                songPlayingOnClickListener?.onItemClicked(position)
+
+            }
         }
 
     }

@@ -7,6 +7,8 @@ import android.media.MediaPlayer
 import android.os.HandlerThread
 import android.os.Looper
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.logging.Handler
@@ -21,9 +23,9 @@ class PlaybackThread(val context: Context) : Thread() {
     var reset = false
     var onTap = false
 
-    @Synchronized
-    override fun run() {
 
+    override fun run() {
+android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO)
 
         while (true) {
             reset = false
@@ -49,11 +51,15 @@ class PlaybackThread(val context: Context) : Thread() {
                         mediaPlayer?.prepare()
                         var hack = 1
                         if (context.isPaused == false) {
-                            context.changePageWithoutCallBack(position!!)
+                            if(context.ll_nowPlaying.visibility==View.VISIBLE) {
+                                context.runOnUiThread { context.changePageWithoutCallBack(position!!) }
+                            }
 
 
 
+                            context.isShuffle = false
 
+                            context.imb_nowPlaying_shuffle.background= ContextCompat.getDrawable(context, R.drawable.ic_baseline_shuffle_24)
                             mediaPlayer?.start()
                             context.sb_nowPlaying.max = mediaPlayer!!.duration
 
@@ -61,20 +67,24 @@ class PlaybackThread(val context: Context) : Thread() {
                         }
 
                         while (mediaPlayer!!.isPlaying || isPaused == true) {
-                            @Synchronized
+
                             if (onTap == false && hack % 300 == 0) {
-                                context.sb_nowPlaying.progress = mediaPlayer!!.currentPosition
+                                if(context.ll_nowPlaying.visibility==View.VISIBLE) {
+                                     context.sb_nowPlaying.progress = mediaPlayer!!.currentPosition
+                                }
 
-
+                                if (reset == true) {
+                                    stopp = true
+                                    break
+                                }
                             }
 
-                            if (reset == true) {
-                                stopp = true
-                                break
-                            }
+
+
 
 
                             hack++
+
                         }
 
                         if (stopp == true) {
@@ -88,8 +98,8 @@ class PlaybackThread(val context: Context) : Thread() {
                                 position = position!! + 1
 
                                 if (context.repeat == 'r') {
-                                    position = position!! - 1
-                                    if (position == musicList?.lastIndex) {
+
+                                    if (position!!-1 == musicList?.lastIndex) {
                                         position = 0
                                     }
                                 }

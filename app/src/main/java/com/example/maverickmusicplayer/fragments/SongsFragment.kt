@@ -111,7 +111,7 @@ val dialog:Dialog= Dialog(requireContext())
                 (activity as MainActivity).tv_nowPlaying_songTitle.text=musicList[position].name
                 (activity as MainActivity).tv_nowPlaying_songTitle.isSelected=true
                 (activity as MainActivity).tv_nowPlaying_songArtist.text=musicList[position].artist
-
+                (activity as MainActivity).permaMusicList=musicList
 
             }
 

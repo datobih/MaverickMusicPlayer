@@ -12,6 +12,7 @@ import com.example.maverickmusicplayer.interfaces.SongOnClickListener
 import com.example.maverickmusicplayer.models.Music
 import com.example.maverickmusicplayer.models.PlaybackThread
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_songs.*
 import kotlinx.android.synthetic.main.item_music.view.*
 import java.lang.StringBuilder
 
@@ -54,13 +55,15 @@ var songOnClickListener:SongOnClickListener?=null
 
 
               if(context is MainActivity){
-                  context.setPlayingAdapter(musicList)
+//before here
+                 context.setPlayingAdapter(musicList)
+
                     context.ll_songPlaying.visibility=View.VISIBLE
 
 
 
 
-                songOnClickListener!!.onItemClicked(position)
+               songOnClickListener!!.onItemClicked(position)
 
 
 /*
