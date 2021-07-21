@@ -55,12 +55,18 @@ android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO)
                                 context.runOnUiThread { context.changePageWithoutCallBack(position!!) }
                             }
 
+/*
+if(context.unshuffle==false) {
+    context.isShuffle = false
 
-
+    context.imb_nowPlaying_shuffle.background = ContextCompat.getDrawable(context, R.drawable.ic_baseline_shuffle_24)
+}
+(
+ */
                             context.isShuffle = false
 
-                            context.imb_nowPlaying_shuffle.background= ContextCompat.getDrawable(context, R.drawable.ic_baseline_shuffle_24)
-                            mediaPlayer?.start()
+                            context.imb_nowPlaying_shuffle.background = ContextCompat.getDrawable(context, R.drawable.ic_baseline_shuffle_24)
+    mediaPlayer?.start()
                             context.sb_nowPlaying.max = mediaPlayer!!.duration
 
 

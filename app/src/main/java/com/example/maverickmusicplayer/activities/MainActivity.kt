@@ -39,8 +39,11 @@ class MainActivity : AppCompatActivity() {
     var change=true
     var check=false
     var isInit=true
+
     var repeat='p'
     var isShuffle=false
+    var shufflePos=0
+    var unshuffle=false
     var shuffledList:ArrayList<Music> =ArrayList<Music>()
     var permaMusicList:ArrayList<Music>?=null
 
@@ -104,10 +107,12 @@ imb_closeNowPlaying.setOnClickListener {
 
         }
         imb_nowPlaying_shuffle.setOnClickListener {
-            check=true
-            if(isShuffle==false){
-                isShuffle=true
 
+            check=true
+            if(isShuffle==false && unshuffle==false){
+                unshuffle=true
+                isShuffle=true
+                shufflePos=vp_songPlaying.currentItem
                 imb_nowPlaying_shuffle.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_shuffle_red_24)
                 shuffledList.addAll(playbackThread!!.musicList!!)
                 permaMusicList=playbackThread!!.musicList
@@ -138,13 +143,38 @@ imb_closeNowPlaying.setOnClickListener {
 
 
             }
-            else{
+            else if(isShuffle==true||unshuffle==true){
 
                 imb_nowPlaying_shuffle.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_shuffle_24)
                 isShuffle=false
+
+
+
+
+
+
+
+
+
+
+
+
+                setPlayingAdapter(permaMusicList!!)
+                vp_nowPlaying.adapter=PagerNowPlaying(this,permaMusicList!!)
+
+                change=false
+
+                playbackThread!!.position=shufflePos
+                vp_nowPlaying.currentItem=shufflePos
+
+
+
+                playbackThread!!.musicList=permaMusicList
+unshuffle=false
             }
 
 check=false
+
         }
 
 
