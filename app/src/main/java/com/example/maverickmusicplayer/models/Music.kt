@@ -10,41 +10,44 @@ import android.os.Parcelable
          val id:Long,
          val name: String?,
          val artist: String?,
+         val album:String?,
          val albumArt:Bitmap?,
          val duration: Int,
          val size: Int
-) :Parcelable{
-    constructor(parcel: Parcel) : this(
-            parcel.readParcelable(Uri::class.java.classLoader),
-            parcel.readLong(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readParcelable(Bitmap::class.java.classLoader),
-            parcel.readInt(),
-            parcel.readInt()) {
-    }
+) : Parcelable {
+     constructor(parcel: Parcel) : this(
+             parcel.readParcelable(Uri::class.java.classLoader),
+             parcel.readLong(),
+             parcel.readString(),
+             parcel.readString(),
+             parcel.readString(),
+             parcel.readParcelable(Bitmap::class.java.classLoader),
+             parcel.readInt(),
+             parcel.readInt()) {
+     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeParcelable(uri, flags)
-        parcel.writeLong(id)
-        parcel.writeString(name)
-        parcel.writeString(artist)
-        parcel.writeParcelable(albumArt, flags)
-        parcel.writeInt(duration)
-        parcel.writeInt(size)
-    }
+     override fun writeToParcel(parcel: Parcel, flags: Int) {
+         parcel.writeParcelable(uri, flags)
+         parcel.writeLong(id)
+         parcel.writeString(name)
+         parcel.writeString(artist)
+         parcel.writeString(album)
+         parcel.writeParcelable(albumArt, flags)
+         parcel.writeInt(duration)
+         parcel.writeInt(size)
+     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+     override fun describeContents(): Int {
+         return 0
+     }
 
-    companion object CREATOR : Parcelable.Creator<Music> {
-        override fun createFromParcel(parcel: Parcel): Music {
-            return Music(parcel)
-        }
+     companion object CREATOR : Parcelable.Creator<Music> {
+         override fun createFromParcel(parcel: Parcel): Music {
+             return Music(parcel)
+         }
 
-        override fun newArray(size: Int): Array<Music?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+         override fun newArray(size: Int): Array<Music?> {
+             return arrayOfNulls(size)
+         }
+     }
+ }

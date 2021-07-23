@@ -17,7 +17,7 @@ object Constants {
  val ARTIST_ALBUM_BUNDLE="artist_bundle"
     val ARTIST_TRACKS_BUNDLE="artist_tracks_bundle"
     val ARTIST_NAME_BUNDLE="artist_name_bundle"
-
+    var nowPlayingParent:Boolean=false
 
     fun displayDialog(dialog:Dialog){
 

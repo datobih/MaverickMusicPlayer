@@ -82,7 +82,8 @@ class AlbumSongFragment : Fragment() {
     }
 
     fun refreshSongs() {
-        var songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList)
+        var songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList,true)
+        Constants.nowPlayingParent=songsRecyclerAdapter.parent
         rv_albumSongs.layoutManager = LinearLayoutManager(requireContext())
 
 

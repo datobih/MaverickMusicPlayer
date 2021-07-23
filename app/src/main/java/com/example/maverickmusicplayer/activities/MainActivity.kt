@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     var change=true
     var check=false
     var isInit=true
-
+var test=false
     var repeat='p'
     var isShuffle=false
     var shufflePos=0
@@ -91,6 +91,7 @@ imb_closeNowPlaying.setOnClickListener {
         }
 
         imb_nowPlaying_repeat.setOnClickListener {
+            test=true
             if(repeat=='p'){
                 repeat='r'
                 imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_red_24)
@@ -294,10 +295,19 @@ vp_nowPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallb
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         super.onPageScrolled(position, positionOffset, positionOffsetPixels)
      //   change=true
+
+
+
+
     }
     override fun onPageSelected(position: Int) {
         super.onPageSelected(position)
-
+        if(Constants.nowPlayingParent==true) {
+            tv_nowPlaying_parentTitle.text = (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].album
+        }
+        else{
+            tv_nowPlaying_parentTitle.text="songs"
+        }
         tv_nowPlaying_songTitle.text =
             (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].name
         tv_nowPlaying_songArtist.text =

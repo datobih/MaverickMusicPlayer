@@ -46,6 +46,7 @@ class DeviceMediaHandler(val context: Context) {
 
 
 
+
             )
 
     val songSelection = "${MediaStore.Audio.Media.DISPLAY_NAME} LIKE ?"
@@ -125,6 +126,7 @@ var tempSelection=songSelection
             var sizeColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
             var artistColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
             var dataColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+            var albumColumn=cursor?.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
 
 
 
@@ -136,6 +138,7 @@ var tempSelection=songSelection
                 val size = cursor.getInt(sizeColumn!!)
                 var artist = cursor.getString(artistColumn!!)
                 val pathData = cursor.getString(dataColumn!!)
+                val album=cursor.getString(albumColumn!!)
 
                 val contentUri = ContentUris.withAppendedId(
                         MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -166,7 +169,7 @@ var tempSelection=songSelection
 
 
 
-                musicList.add(Music(contentUri, id, name, artist, bitmap, duration, size))
+                musicList.add(Music(contentUri, id, name, artist,album, bitmap, duration, size))
             }
 
 

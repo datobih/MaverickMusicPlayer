@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_songs.*
 import kotlinx.android.synthetic.main.item_music.view.*
 import java.lang.StringBuilder
 
-class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>):RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() {
+class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>,val parent: Boolean):RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() {
 
 
 var connected=false

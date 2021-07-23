@@ -102,21 +102,70 @@ android:visibility="gone"
     tools:visibility="visible"
     android:background="@drawable/now_playing_theme"
     >
+<RelativeLayout
+    android:id="@+id/ll_top_nowPlaying"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+
+
+    >
 
     <ImageButton
         android:id="@+id/imb_closeNowPlaying"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
+android:layout_centerVertical="true"
 
-        android:layout_gravity="start"
+
         ></ImageButton>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:id="@+id/tv_nowPlaying_parentTitleHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+
+        android:text="Now playing "
+
+        android:textColor="#EAEAEA"
+        android:textSize="14dp"
+
+        ></TextView>
+
+    <TextView
+        android:id="@+id/tv_nowPlaying_parentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="songs"
+        android:singleLine="true"
+
+    android:ellipsize="end"
+    android:maxEms="10"
+       android:maxLines="1"
+android:layout_centerVertical="true"
+        android:textColor="#EAEAEA"
+        android:textSize="14dp"
+android:layout_toRightOf="@id/tv_nowPlaying_parentTitleHolder"
+
+        ></TextView>
+</LinearLayout>
+</RelativeLayout>
+
+
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_nowPlaying"
         android:layout_width="match_parent"
         android:layout_height="450dp"
-android:layout_below="@id/imb_closeNowPlaying"
+android:layout_below="@id/ll_top_nowPlaying"
 
         android:layout_gravity="center_horizontal"
         ></androidx.viewpager2.widget.ViewPager2>

@@ -18,6 +18,7 @@ import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.adapters.AlbumRecyclerAdapter
 import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
+import com.example.maverickmusicplayer.adapters.PagerNowPlaying
 import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 import com.example.maverickmusicplayer.constants.Constants
@@ -96,18 +97,32 @@ val dialog:Dialog= Dialog(requireContext())
 
     }
     fun refreshSongs(){
-        var songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList)
-        rv_songs.layoutManager = LinearLayoutManager(requireContext())
+        var songsRecyclerAdapter:SongsRecyclerAdapter?=null
+        if(artist==null) {
+            songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList, false)
+
+
+        }
+        else{
+            songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList, true)
+        }
+
+            rv_songs.layoutManager = LinearLayoutManager(requireContext())
         rv_songs.adapter = songsRecyclerAdapter
 
         songsRecyclerAdapter.setOnSongClicked(object:SongOnClickListener{
             override fun onItemClicked(position: Int) {
-
+                Constants.nowPlayingParent=songsRecyclerAdapter.parent
                 (rv_songs.adapter as SongsRecyclerAdapter).notifyDataSetChanged()
                 (activity as MainActivity).vp_songPlaying.setCurrentItem(position,false)
 
 
-
+                if(Constants.nowPlayingParent==true) {
+                    (activity as MainActivity).tv_nowPlaying_parentTitle.text = musicList[position].album
+                }
+                else{
+                    (activity as MainActivity).tv_nowPlaying_parentTitle.text="songs"
+                }
                 (activity as MainActivity).tv_nowPlaying_songTitle.text=musicList[position].name
                 (activity as MainActivity).tv_nowPlaying_songTitle.isSelected=true
                 (activity as MainActivity).tv_nowPlaying_songArtist.text=musicList[position].artist
