@@ -24,6 +24,7 @@
         android:textColor='@color/white'
         android:textStyle="bold"
 
+        android:fontFamily="@font/montserrat"
         ></TextView>
 
     <androidx.recyclerview.widget.RecyclerView

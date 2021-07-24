@@ -14,6 +14,7 @@
         android:background="#1E2E2E2E"
        app:tabTextColor="@color/bottom_navi_icon"
         app:tabIndicatorColor="@color/bottom_navi_icon"
+app:tabTextAppearance="@style/CustomTabLayoutFont"
        ></com.google.android.material.tabs.TabLayout>
 
 

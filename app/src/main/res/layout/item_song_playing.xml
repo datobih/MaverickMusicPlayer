@@ -38,6 +38,8 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             tools:textColor="@color/black"
+
+            android:fontFamily="@font/montserrat"
             ></TextView>
 
         <TextView
@@ -49,6 +51,8 @@
             android:layout_marginTop="5dp"
             android:textColor="@color/white"
             tools:textColor="@color/black"
+
+            android:fontFamily="@font/montserrat"
             ></TextView>
 
 

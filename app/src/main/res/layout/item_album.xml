@@ -32,6 +32,7 @@
         android:singleLine="true"
         android:ellipsize="end"
 
+        android:fontFamily="@font/montserrat"
         ></TextView>
 
     <TextView
@@ -49,5 +50,6 @@
         android:singleLine="true"
         android:ellipsize="end"
 
+        android:fontFamily="@font/montserrat"
         ></TextView>
 </RelativeLayout>

@@ -34,4 +34,16 @@
         <item name="colorControlActivated">@color/white</item>
 
     </style>
+    
+    <style name="CustomBottomNavigationFont" >
+
+        <item name="fontFamily">@font/montserrat</item>
+
+    </style>
+    <style name="CustomTabLayoutFont" parent="android:style/TextAppearance.Widget.TabWidget">
+
+        <item name="fontFamily">@font/montserrat</item>
+
+    </style>
+    
 </resources>
