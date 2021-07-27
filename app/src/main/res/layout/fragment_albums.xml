@@ -21,7 +21,7 @@
         android:layout_marginTop="20dp"
         android:text="Albums"
         tools:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="22dp"
         android:textColor='@color/white'
         android:textStyle="bold"
 

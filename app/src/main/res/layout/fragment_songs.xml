@@ -20,7 +20,7 @@
         android:layout_marginTop="20dp"
         android:text="Songs"
         tools:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="22dp"
         android:textColor='@color/white'
         android:textStyle="bold"
 
@@ -31,6 +31,7 @@
         android:id="@+id/rv_songs"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        style="@style/CustomScrollStyle"
         app:layout_constraintTop_toBottomOf="@id/tv_songHeader"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

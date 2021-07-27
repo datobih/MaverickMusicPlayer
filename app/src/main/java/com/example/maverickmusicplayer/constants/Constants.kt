@@ -10,7 +10,9 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.example.maverickmusicplayer.R
+import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 
 object Constants {
  val ALBUM_SONG_BUNDLE="album_song_bundle"
@@ -18,6 +20,8 @@ object Constants {
     val ARTIST_TRACKS_BUNDLE="artist_tracks_bundle"
     val ARTIST_NAME_BUNDLE="artist_name_bundle"
     var nowPlayingParent:Boolean=false
+    var test:FragmentManager?=null
+    var songsRecyclerAdapter:SongsRecyclerAdapter?=null
 
     fun displayDialog(dialog:Dialog){
 

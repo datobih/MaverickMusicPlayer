@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaverickMusicPlayer">
         <activity android:name=".activities.MainActivity"
-            android:theme="@style/CustomNoActionBar">
+            android:theme="@style/CustomNoActionBar"
+    >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

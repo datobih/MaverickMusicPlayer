@@ -1,17 +1,13 @@
-package com.example.maverickmusicplayer.models
+package com.example.maverickmusicplayer.handlers
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.icu.util.ValueIterator
 import android.media.MediaPlayer
-import android.os.HandlerThread
-import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
+import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.logging.Handler
 
 class PlaybackThread(val context: Context) : Thread() {
     var mediaPlayer: MediaPlayer? = null

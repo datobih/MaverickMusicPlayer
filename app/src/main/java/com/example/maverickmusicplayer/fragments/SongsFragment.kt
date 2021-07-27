@@ -1,33 +1,21 @@
 package com.example.maverickmusicplayer.fragments
 
-import android.app.Activity
 import android.app.Dialog
-import android.content.Context
-import android.os.*
-import androidx.fragment.app.Fragment
+import android.os.AsyncTask
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.MainThread
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
-import com.example.maverickmusicplayer.adapters.AlbumRecyclerAdapter
-import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
-import com.example.maverickmusicplayer.adapters.PagerNowPlaying
-import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 import com.example.maverickmusicplayer.constants.Constants
-import com.example.maverickmusicplayer.interfaces.AlbumOnClickListener
+import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.interfaces.SongOnClickListener
-import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_albums.*
 import kotlinx.android.synthetic.main.fragment_songs.*
 
 
@@ -109,6 +97,7 @@ val dialog:Dialog= Dialog(requireContext())
 
             rv_songs.layoutManager = LinearLayoutManager(requireContext())
         rv_songs.adapter = songsRecyclerAdapter
+        Constants.songsRecyclerAdapter=songsRecyclerAdapter
 
         songsRecyclerAdapter.setOnSongClicked(object:SongOnClickListener{
             override fun onItemClicked(position: Int) {

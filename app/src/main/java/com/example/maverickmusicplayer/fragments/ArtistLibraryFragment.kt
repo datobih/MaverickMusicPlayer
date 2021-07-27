@@ -32,11 +32,12 @@ var artist:String?=""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         tab_artist.addTab(tab_artist.newTab().setText("Albums"))
         tab_artist.addTab(tab_artist.newTab().setText("Tracks"))
 
 
-        var adapter=PagerArtistFragmentAdapter(requireFragmentManager(),lifecycle,artist!!)
+        var adapter=PagerArtistFragmentAdapter(childFragmentManager,lifecycle,artist!!)
         vp_artist.adapter=adapter
 
 

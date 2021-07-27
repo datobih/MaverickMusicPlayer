@@ -5,12 +5,13 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,33 +20,33 @@ import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.adapters.PagerFragmentAdapter
 import com.example.maverickmusicplayer.adapters.PagerNowPlaying
 import com.example.maverickmusicplayer.adapters.PagerSongPlaying
-import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 import com.example.maverickmusicplayer.constants.Constants
+import com.example.maverickmusicplayer.handlers.PlaybackThread
 import com.example.maverickmusicplayer.interfaces.SongPlayingOnClickListener
 import com.example.maverickmusicplayer.models.Music
-import com.example.maverickmusicplayer.models.PlaybackThread
 import com.example.maverickmusicplayer.utils.BlurBuilder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_album_song.*
+import kotlinx.android.synthetic.main.fragment_artist_library.*
 import kotlinx.android.synthetic.main.fragment_songs.*
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.thread
+
 
 class MainActivity : AppCompatActivity() {
 
 
-    var playbackThread:PlaybackThread?=null
-    var isPaused=false
-    var change=true
-    var check=false
-    var isInit=true
-var test=false
-    var repeat='p'
-    var isShuffle=false
-    var shufflePos=0
-    var unshuffle=false
-    var shuffledList:ArrayList<Music> =ArrayList<Music>()
-    var permaMusicList:ArrayList<Music>?=null
+    var playbackThread: PlaybackThread? = null
+    var isPaused = false
+    var change = true
+    var check = false
+    var isInit = true
+    var test = false
+    var repeat = 'p'
+    var isShuffle = false
+    var shufflePos = 0
+    var unshuffle = false
+    var shuffledList: ArrayList<Music> = ArrayList<Music>()
+    var permaMusicList: ArrayList<Music>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ var test=false
 
         setContentView(R.layout.activity_main)
 
-
+setSupportActionBar(toolbar_main)
 
 
 
@@ -65,13 +66,14 @@ var test=false
 
         }
 
-imb_closeNowPlaying.setOnClickListener {
-    onBackPressed()
-}
+        imb_closeNowPlaying.setOnClickListener {
+            onBackPressed()
+        }
+
+
         imb_pause_play.setOnClickListener {
 
-          setPause()
-
+            setPause()
 
 
         }
@@ -82,72 +84,73 @@ imb_closeNowPlaying.setOnClickListener {
 
         imb_nowPlaying_skipNext.setOnClickListener {
 
-            vp_nowPlaying.currentItem=(vp_nowPlaying.currentItem)+1
+            vp_nowPlaying.currentItem = (vp_nowPlaying.currentItem) + 1
 
         }
 
-        imb_nowPlaying_skipPrevious.setOnClickListener{
-            vp_nowPlaying.currentItem=(vp_nowPlaying.currentItem)-1
+        imb_nowPlaying_skipPrevious.setOnClickListener {
+            vp_nowPlaying.currentItem = (vp_nowPlaying.currentItem) - 1
         }
 
         imb_nowPlaying_repeat.setOnClickListener {
-            test=true
-            if(repeat=='p'){
-                repeat='r'
-                imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_red_24)
-            }
-            else if(repeat=='r'){
-                repeat='R'
-                imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_one_24)
-            }
-            else if(repeat=='R'){
-                repeat='p'
-                imb_nowPlaying_repeat.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_repeat_24)
+            test = true
+            if (repeat == 'p') {
+                repeat = 'r'
+                imb_nowPlaying_repeat.background =
+                    ContextCompat.getDrawable(this, R.drawable.ic_baseline_repeat_red_24)
+            } else if (repeat == 'r') {
+                repeat = 'R'
+                imb_nowPlaying_repeat.background =
+                    ContextCompat.getDrawable(this, R.drawable.ic_baseline_repeat_one_24)
+            } else if (repeat == 'R') {
+                repeat = 'p'
+                imb_nowPlaying_repeat.background =
+                    ContextCompat.getDrawable(this, R.drawable.ic_baseline_repeat_24)
             }
 
 
         }
         imb_nowPlaying_shuffle.setOnClickListener {
 
-            check=true
-            if(isShuffle==false && unshuffle==false){
-                unshuffle=true
-                isShuffle=true
-                shufflePos=vp_songPlaying.currentItem
-                imb_nowPlaying_shuffle.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_shuffle_red_24)
+            check = true
+            if (isShuffle == false && unshuffle == false) {
+                unshuffle = true
+                isShuffle = true
+                shufflePos = vp_songPlaying.currentItem
+                imb_nowPlaying_shuffle.background =
+                    ContextCompat.getDrawable(this, R.drawable.ic_baseline_shuffle_red_24)
                 shuffledList.addAll(playbackThread!!.musicList!!)
-                permaMusicList=playbackThread!!.musicList
-                var tempMusic=(vp_songPlaying.adapter as PagerSongPlaying).musicList[vp_songPlaying.currentItem]
+                permaMusicList = playbackThread!!.musicList
+                var tempMusic =
+                    (vp_songPlaying.adapter as PagerSongPlaying).musicList[vp_songPlaying.currentItem]
                 shuffledList?.shuffle()
 
 
-
-
-                var playingPos=shuffledList.indexOf(tempMusic)
+                var playingPos = shuffledList.indexOf(tempMusic)
 
                 //Swap Positions of current shuffled index with first
-                shuffledList[playingPos]=shuffledList[0]
-                shuffledList[0]=tempMusic
+                shuffledList[playingPos] = shuffledList[0]
+                shuffledList[0] = tempMusic
 
 
                 setPlayingAdapter(shuffledList)
-                vp_nowPlaying.adapter=PagerNowPlaying(this,shuffledList)
+                vp_nowPlaying.adapter = PagerNowPlaying(this, shuffledList)
 
-                change=false
+                change = false
 
-                playbackThread!!.position=0
-                vp_nowPlaying.currentItem=0
-
-
-
-                playbackThread!!.musicList=shuffledList
+                playbackThread!!.position = 0
+                vp_nowPlaying.currentItem = 0
 
 
-            }
-            else if(isShuffle==true||unshuffle==true){
 
-                imb_nowPlaying_shuffle.background=ContextCompat.getDrawable(this,R.drawable.ic_baseline_shuffle_24)
-                isShuffle=false
+                playbackThread!!.musicList = shuffledList
+
+
+            } else if (isShuffle == true || unshuffle == true) {
+
+                imb_nowPlaying_shuffle.background =
+                    ContextCompat.getDrawable(this, R.drawable.ic_baseline_shuffle_24)
+                isShuffle = false
 
 
 
@@ -161,27 +164,27 @@ imb_closeNowPlaying.setOnClickListener {
 
 
                 setPlayingAdapter(permaMusicList!!)
-                vp_nowPlaying.adapter=PagerNowPlaying(this,permaMusicList!!)
+                vp_nowPlaying.adapter = PagerNowPlaying(this, permaMusicList!!)
 
-                change=false
+                change = false
 
-                playbackThread!!.position=shufflePos
-                vp_nowPlaying.currentItem=shufflePos
+                playbackThread!!.position = shufflePos
+                vp_nowPlaying.currentItem = shufflePos
 
 
 
-                playbackThread!!.musicList=permaMusicList
-unshuffle=false
+                playbackThread!!.musicList = permaMusicList
+                unshuffle = false
             }
 
-check=false
+            check = false
 
         }
 
 
-        var adapter=PagerFragmentAdapter(supportFragmentManager, lifecycle)
-        vp_main.adapter=adapter
-        vp_main.isUserInputEnabled=false
+        var adapter = PagerFragmentAdapter(supportFragmentManager, lifecycle)
+        vp_main.adapter = adapter
+        vp_main.isUserInputEnabled = false
 
         vp_main.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -194,156 +197,163 @@ check=false
 
 
 
-vp_songPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        vp_songPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
 
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-       change=true
-
-    }
-
-
-    override fun onPageSelected(position: Int) {
-        super.onPageSelected(position)
-
-
-        if (change == true) {
-
-
-if(isInit==true){
-    playbackThread = PlaybackThread(
-            this@MainActivity
-    )
-playbackThread!!.musicList=(vp_songPlaying.adapter as PagerSongPlaying).musicList
-    playbackThread!!.position=position
-    playbackThread?.start()
-
-    isInit=false
-}
-            else{
-
-    playbackThread!!.reset = true
-
-
-                    playbackThread!!.musicList=(vp_songPlaying.adapter as PagerSongPlaying).musicList
-                    playbackThread!!.position=position
-
-
-
-
-
-
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                change = true
 
             }
 
 
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
 
 
-            /*
-            if (isPaused == true) {
-                playbackThread?.isPaused = true
+                if (change == true) {
+
+
+                    if (isInit == true) {
+                        playbackThread = PlaybackThread(
+                            this@MainActivity
+                        )
+                        playbackThread!!.musicList =
+                            (vp_songPlaying.adapter as PagerSongPlaying).musicList
+                        playbackThread!!.position = position
+                        playbackThread?.start()
+
+                        isInit = false
+                    } else {
+
+                        playbackThread!!.reset = true
+
+
+                        playbackThread!!.musicList =
+                            (vp_songPlaying.adapter as PagerSongPlaying).musicList
+                        playbackThread!!.position = position
+
+
+                    }
+
+
+                    /*
+                    if (isPaused == true) {
+                        playbackThread?.isPaused = true
+                    }
+
+                     */
+
+                } else {
+                    isShuffle = false
+
+
+                }
+
             }
 
-             */
 
-        }
-        else{
-            isShuffle = false
+        })
 
+        sb_nowPlaying.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (ll_nowPlaying.visibility == View.VISIBLE) {
+                    val currentDurationMillis = sb_nowPlaying.progress
 
-
-        }
-
-    }
-
-
-
-})
-
-sb_nowPlaying.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
-    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        if(ll_nowPlaying.visibility==View.VISIBLE) {
-            val currentDurationMillis = sb_nowPlaying.progress
-
-            val currentDurationMins = (currentDurationMillis / 1000) / 60
-            val currentDurationSecs = (currentDurationMillis / 1000) % 60
-            if (currentDurationSecs < 10) {
-                runOnUiThread { tv_nowPlaying_currentDuration.text = "${currentDurationMins.toString()}:0${currentDurationSecs.toString()}" }
-            } else {
-                runOnUiThread { tv_nowPlaying_currentDuration.text = "${currentDurationMins.toString()}:${currentDurationSecs.toString()}" }
+                    val currentDurationMins = (currentDurationMillis / 1000) / 60
+                    val currentDurationSecs = (currentDurationMillis / 1000) % 60
+                    if (currentDurationSecs < 10) {
+                        runOnUiThread {
+                            tv_nowPlaying_currentDuration.text =
+                                "${currentDurationMins.toString()}:0${currentDurationSecs.toString()}"
+                        }
+                    } else {
+                        runOnUiThread {
+                            tv_nowPlaying_currentDuration.text =
+                                "${currentDurationMins.toString()}:${currentDurationSecs.toString()}"
+                        }
+                    }
+                }
             }
-        }
-    }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
 
-       playbackThread?.onTap=true
+                playbackThread?.onTap = true
 
-    }
+            }
 
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-        playbackThread?.mediaPlayer?.seekTo(sb_nowPlaying.progress)
-        playbackThread?.onTap=false
-    }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                playbackThread?.mediaPlayer?.seekTo(sb_nowPlaying.progress)
+                playbackThread?.onTap = false
+            }
 
 
-})
+        })
 
 
-vp_nowPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-     //   change=true
+        vp_nowPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                //   change=true
 
 
+            }
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (Constants.nowPlayingParent == true) {
+                    tv_nowPlaying_parentTitle.text =
+                        (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].album
+                } else {
+                    tv_nowPlaying_parentTitle.text = "songs"
+                }
+                tv_nowPlaying_songTitle.text =
+                    (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].name
+                tv_nowPlaying_songArtist.text =
+                    (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].artist
+                val totalDurationMillis =
+                    (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].duration
+                var totalDurationMins = (totalDurationMillis / 1000) / 60
+                var totalDurationSecs = ((totalDurationMillis / 1000) % 60)
+
+                if (totalDurationSecs < 10) {
+                    tv_nowPlaying_totalDuration.text =
+                        "${totalDurationMins.toString()}:0${totalDurationSecs.toString()}"
+                } else {
+                    tv_nowPlaying_totalDuration.text =
+                        "${totalDurationMins.toString()}:${totalDurationSecs.toString()}"
+                }
+
+                var sampleArt =
+                    (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].albumArt
+
+                if (sampleArt != null) {
+                    sampleArt = BlurBuilder.blur(this@MainActivity, sampleArt)
+                    sampleArt = darkenBitMap(sampleArt)
+                    var bitmapDrawable = BitmapDrawable(sampleArt)
+                    ll_nowPlaying.background = bitmapDrawable
 
 
-    }
-    override fun onPageSelected(position: Int) {
-        super.onPageSelected(position)
-        if(Constants.nowPlayingParent==true) {
-            tv_nowPlaying_parentTitle.text = (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].album
-        }
-        else{
-            tv_nowPlaying_parentTitle.text="songs"
-        }
-        tv_nowPlaying_songTitle.text =
-            (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].name
-        tv_nowPlaying_songArtist.text =
-            (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].artist
-        val totalDurationMillis=(vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].duration
-        var totalDurationMins=(totalDurationMillis/1000)/60
-        var totalDurationSecs=((totalDurationMillis/1000)%60)
+                } else {
+                    ll_nowPlaying.background = ContextCompat.getDrawable(
+                        this@MainActivity,
+                        R.drawable.now_playing_theme
+                    )
+                }
 
-        if(totalDurationSecs<10) {
-            tv_nowPlaying_totalDuration.text = "${totalDurationMins.toString()}:0${totalDurationSecs.toString()}"
-        }
-        else{
-            tv_nowPlaying_totalDuration.text = "${totalDurationMins.toString()}:${totalDurationSecs.toString()}"
-        }
+                vp_songPlaying.setCurrentItem(position, false)
 
-        var sampleArt = (vp_nowPlaying.adapter as PagerNowPlaying).musicList[position].albumArt
+            }
 
-        if (sampleArt != null) {
-            sampleArt = BlurBuilder.blur(this@MainActivity, sampleArt)
-            sampleArt=darkenBitMap(sampleArt)
-            var bitmapDrawable = BitmapDrawable(sampleArt)
-            ll_nowPlaying.background = bitmapDrawable
-
-
-        } else {
-            ll_nowPlaying.background = ContextCompat.getDrawable(
-                this@MainActivity,
-                R.drawable.now_playing_theme
-            )
-        }
-
-       vp_songPlaying.setCurrentItem(position, false)
-
-    }
-
-})
+        })
 
 
         bottom_navigation.setOnNavigationItemSelectedListener(object :
@@ -378,77 +388,69 @@ vp_nowPlaying.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallb
 
         })
 
-        vp_main.currentItem=1
-        vp_main.currentItem=0
+        vp_main.currentItem = 1
+        vp_main.currentItem = 0
 
     }
 
-fun setPlayingAdapter(musicList: ArrayList<Music>){
+    fun setPlayingAdapter(musicList: ArrayList<Music>) {
 
 
+        var adapter = PagerSongPlaying(this, musicList)
 
-    var adapter= PagerSongPlaying(this, musicList)
+        adapter.setSongPlayingOnClickListener(object : SongPlayingOnClickListener {
+            override fun onItemClicked(position: Int) {
+                ll_main.visibility = View.INVISIBLE
+               toolbar_main.visibility=View.GONE
+                ll_nowPlaying.visibility = View.VISIBLE
 
-    adapter.setSongPlayingOnClickListener(object : SongPlayingOnClickListener {
-        override fun onItemClicked(position: Int) {
-            ll_main.visibility=View.INVISIBLE
-            ll_nowPlaying.visibility = View.VISIBLE
-
-            var adapter = PagerNowPlaying(
-                this@MainActivity,
-                (vp_songPlaying.adapter as PagerSongPlaying).musicList
-            )
-            vp_nowPlaying.adapter = adapter
-            vp_nowPlaying.setCurrentItem(position, false)
-
-
-        }
+                var adapter = PagerNowPlaying(
+                    this@MainActivity,
+                    (vp_songPlaying.adapter as PagerSongPlaying).musicList
+                )
+                vp_nowPlaying.adapter = adapter
+                vp_nowPlaying.setCurrentItem(position, false)
 
 
-    })
+            }
+
+
+        })
 
         vp_songPlaying.adapter = adapter
 
 
-}
+    }
 
-    fun setPause(){
+    fun setPause() {
 
-        if(isPaused==false){
-            imb_pause_play.background=ContextCompat.getDrawable(
-                    this,
-                    R.drawable.baseline_play_arrow_24
+        if (isPaused == false) {
+            imb_pause_play.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.baseline_play_arrow_24
             )
-            imb_nowPlaying_pausePlay.background=ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_baseline_play_circle_filled_24
+            imb_nowPlaying_pausePlay.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_baseline_play_circle_filled_24
             )
 
-            isPaused=true
-            playbackThread?.isPaused=true
+            isPaused = true
+            playbackThread?.isPaused = true
             playbackThread?.mediaPlayer!!.pause()
 
 
-        }
-
-        else{
-            imb_pause_play.background=ContextCompat.getDrawable(
-                    this,
-                    R.drawable.baseline_pause_24
+        } else {
+            imb_pause_play.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.baseline_pause_24
             )
-            imb_nowPlaying_pausePlay.background=ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_baseline_pause_circle_filled_24
+            imb_nowPlaying_pausePlay.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_baseline_pause_circle_filled_24
             )
-            isPaused=false
+            isPaused = false
             playbackThread?.mediaPlayer!!.start()
-            playbackThread?.isPaused=false
-
-
-
-
-
-
+            playbackThread?.isPaused = false
 
 
         }
@@ -456,21 +458,26 @@ fun setPlayingAdapter(musicList: ArrayList<Music>){
 
     override fun onBackPressed() {
 
-        if(ll_nowPlaying.visibility==View.VISIBLE){
+        if (ll_nowPlaying.visibility == View.VISIBLE) {
+            toolbar_main.visibility=View.VISIBLE
+            ll_main.visibility = View.VISIBLE
+            ll_nowPlaying.visibility = View.GONE
 
-            ll_main.visibility=View.VISIBLE
-            ll_nowPlaying.visibility=View.GONE
+        } else {
+
+if(supportFragmentManager.backStackEntryCount==0){
+    if(vp_main.currentItem!=0){
+
+   bottom_navigation.selectedItemId=R.id.nav_songs
+    }
+    else{
+        super.onBackPressed()
+    }
+}
+
+
 
         }
-        else {
-            super.onBackPressed()
-
-        }
-
-
-
-
-
 
 
         /*
@@ -488,23 +495,25 @@ fun setPlayingAdapter(musicList: ArrayList<Music>){
      */
 
     }
+
     fun updateMusicProgress() {
         var handler = Handler(Looper.getMainLooper())
         handler.post {
-            sb_nowPlaying.progress=playbackThread?.mediaPlayer!!.currentPosition
+            sb_nowPlaying.progress = playbackThread?.mediaPlayer!!.currentPosition
 
         }
     }
-    fun changePageWithoutCallBack(position: Int){
-        change=false
-        var handler=Handler(Looper.getMainLooper())
+
+    fun changePageWithoutCallBack(position: Int) {
+        change = false
+        var handler = Handler(Looper.getMainLooper())
         handler.post {
-            vp_nowPlaying.currentItem=position
-            vp_songPlaying.currentItem=position
+            vp_nowPlaying.currentItem = position
+            vp_songPlaying.currentItem = position
         }
 
 
-        change=true
+        change = true
 
 
     }
@@ -517,10 +526,46 @@ fun setPlayingAdapter(musicList: ArrayList<Music>){
         return bm
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater=menuInflater
+        inflater.inflate(R.menu.action_bar_menu,menu)
+
+       val menuItem=menu?.findItem(R.id.search_barr)
+        val searchView=menuItem?.actionView as androidx.appcompat.widget.SearchView
+        searchView.imeOptions=EditorInfo.IME_ACTION_DONE
+        searchView.setOnQueryTextListener(object:androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                Constants.songsRecyclerAdapter?.exampleFilter?.filter(newText)
+return false
+            }
+
+        })
+
+        return super.onCreateOptionsMenu(menu)
 
 
 
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if(item.itemId==R.id.search_barr){
+            bottom_navigation.selectedItemId=R.id.nav_songs
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+
+    }
+
 }

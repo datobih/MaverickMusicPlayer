@@ -18,14 +18,33 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:layout_marginTop="3dp"
+        >
 
-    <ImageView
-        android:id="@+id/imv_albumInfoCover"
-        android:layout_width="170dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/black"
-    ></ImageView>
+        <ImageButton
+            android:id="@+id/imb_albumSong_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            android:layout_margin="10dp"
+
+            ></ImageButton>
+
+        <ImageView
+            android:id="@+id/imv_albumInfoCover"
+            android:layout_width="170dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/black"
+            android:layout_centerInParent="true"
+            ></ImageView>
+
+    </RelativeLayout>
+
+
 
     <TextView
         android:id="@+id/tv_albumInfoTitle"

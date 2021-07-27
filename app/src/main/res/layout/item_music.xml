@@ -47,7 +47,7 @@
                     android:fontFamily="@font/montserrat"
 
                     android:text="Title"
-                    android:textSize="20dp"
+                    android:textSize="18dp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     tools:textColor="@color/black"
@@ -60,7 +60,7 @@
 
                     android:fontFamily="@font/montserrat"
                     android:text="Artist"
-                    android:textSize="17dp"
+                    android:textSize="15dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/white"
                     tools:textColor="@color/black"

@@ -76,10 +76,15 @@ class AlbumsFragment : Fragment() {
                         mAlbumSongFragment.arguments=bundle
 
                             if(artist!=null) {
-                                fragmentManager?.beginTransaction()?.apply {
+                               requireActivity().supportFragmentManager.beginTransaction()?.apply {
+
+                               addToBackStack(null)
+
+
                                     replace(R.id.holder_artist_fragment, mAlbumSongFragment)
 
-                                    addToBackStack(null)
+
+
                                     commit()
 
                                 }
@@ -113,6 +118,12 @@ class AlbumsFragment : Fragment() {
         }.execute()
 
 
+    }
+
+    override fun onResume() {
+
+
+        super.onResume()
     }
 
     override fun onDestroy() {

@@ -1,24 +1,23 @@
 package com.example.maverickmusicplayer.adapters
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.interfaces.SongOnClickListener
 import com.example.maverickmusicplayer.models.Music
-import com.example.maverickmusicplayer.models.PlaybackThread
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_songs.*
 import kotlinx.android.synthetic.main.item_music.view.*
-import java.lang.StringBuilder
 
-class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>,val parent: Boolean):RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() {
+class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>,val parent: Boolean):RecyclerView.Adapter<SongsRecyclerAdapter.ViewHolder>() ,Filterable{
 
 
+val completeMusicList=ArrayList<Music>(musicList)
 var connected=false
 var songOnClickListener:SongOnClickListener?=null
 
@@ -114,6 +113,39 @@ var songOnClickListener:SongOnClickListener?=null
     }
 
 
+    val exampleFilter=object: Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+var filteredList=ArrayList<Music>()
+            val searchPattern=constraint.toString().toLowerCase().trim()
+            if(searchPattern.isNullOrEmpty()){
+filteredList.addAll(completeMusicList)
+            }
+else {
+                for (i in completeMusicList) {
+
+                    if (i.name!!.toLowerCase().contains(searchPattern)) {
+                        filteredList.add(i)
+                    }
+                }
+            }
+
+            val filterResults=FilterResults()
+            filterResults.values=filteredList
+
+            return filterResults
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+
+           musicList.clear()
+           musicList.addAll(results?.values as ArrayList<Music>)
+            notifyDataSetChanged()
+
+        }
+
+    }
+
+
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         var songTitle=view.tv_songTitle
         var songCover=view.imv_songCover
@@ -121,6 +153,10 @@ var songOnClickListener:SongOnClickListener?=null
         var songLayout=view.ll_songItem
 
 
+    }
+
+    override fun getFilter(): Filter {
+        TODO("Not yet implemented")
     }
 
 

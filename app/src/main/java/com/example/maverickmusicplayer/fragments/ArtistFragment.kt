@@ -22,6 +22,7 @@ import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.fragment_albums.*
 import kotlinx.android.synthetic.main.fragment_artist.*
 import kotlinx.android.synthetic.main.fragment_holder_artists.*
+import kotlin.concurrent.fixedRateTimer
 
 
 class ArtistFragment : Fragment() {
@@ -60,7 +61,12 @@ class ArtistFragment : Fragment() {
                         val artistLibrary=ArtistLibraryFragment()
                         artistLibrary.arguments=bundle
 
-                        fragmentManager?.beginTransaction()?.replace(R.id.holder_artist_fragment,artistLibrary)?.commit()
+
+                        requireActivity().supportFragmentManager?.beginTransaction()?.apply {
+                            addToBackStack(null)
+                            replace(R.id.holder_artist_fragment,artistLibrary)
+
+                            commit() }
                     }
 
                 })

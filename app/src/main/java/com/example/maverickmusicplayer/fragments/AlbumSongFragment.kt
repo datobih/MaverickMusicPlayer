@@ -47,6 +47,10 @@ class AlbumSongFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        imb_albumSong_back.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         if(album?.art!=null) {
             imv_albumInfoCover.setImageBitmap(album?.art)
 
