@@ -51,9 +51,9 @@ android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_AUDIO)
                             mediaPlayer?.prepare()
                             hack = 1
                             if (context.isPaused == false) {
-                                if(context.ll_nowPlaying.visibility==View.VISIBLE) {
+
                                     context.runOnUiThread { context.changePageWithoutCallBack(position!!) }
-                                }
+
 
 /*
 if(context.unshuffle==false) {

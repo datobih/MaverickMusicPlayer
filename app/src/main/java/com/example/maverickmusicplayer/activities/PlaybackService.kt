@@ -23,11 +23,14 @@ class PlaybackService: Service() {
 
 
         }
+var art=Constants.mainActivity!!.currentMusic!!.albumArt
+
 
 
         var notification= NotificationCompat.Builder(this, App.CHANNEL_1)
-                .setSmallIcon(R.drawable.notif_icon)
-                .setLargeIcon( Constants.mainActivity!!.currentMusic!!.albumArt)
+                .setSmallIcon(R.drawable.ic_m_icon)
+                .setLargeIcon(art)
+
                 .setContentTitle( Constants.mainActivity!!.currentMusic!!.name)
                 .setContentText( Constants.mainActivity!!.currentMusic!!.artist)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

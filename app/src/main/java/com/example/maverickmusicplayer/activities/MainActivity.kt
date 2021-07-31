@@ -3,10 +3,7 @@ package com.example.maverickmusicplayer.activities
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaMetadata
 import android.os.Bundle
@@ -65,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     var pendingNext:PendingIntent?=null
     var pendingPause:PendingIntent?=null
     var mediaSession:MediaSessionCompat?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,11 +71,13 @@ class MainActivity : AppCompatActivity() {
 
 setSupportActionBar(toolbar_main)
 
+
         mediaSession= MediaSessionCompat(this,"tag")
 
         val mediaMetaData=MediaMetadata.Builder()
                 .putLong(MediaMetadata.METADATA_KEY_DURATION,-1L).build()
         mediaSession!!.setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetaData))
+
 
 var contentIntent= Intent(this,this::class.java)
 
@@ -622,7 +622,9 @@ return false
     }
 
     fun startPlaybackService(){
+
         var serviceIntent=Intent(this@MainActivity,PlaybackService::class.java)
+
         startService(serviceIntent)
 
     }
