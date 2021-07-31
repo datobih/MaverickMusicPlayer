@@ -102,7 +102,7 @@ val dialog:Dialog= Dialog(requireContext())
         songsRecyclerAdapter.setOnSongClicked(object:SongOnClickListener{
             override fun onItemClicked(position: Int) {
                 Constants.nowPlayingParent=songsRecyclerAdapter.parent
-                (rv_songs.adapter as SongsRecyclerAdapter).notifyDataSetChanged()
+
                 (activity as MainActivity).vp_songPlaying.setCurrentItem(position,false)
 
 

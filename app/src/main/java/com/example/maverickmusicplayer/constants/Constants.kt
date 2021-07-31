@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.example.maverickmusicplayer.R
+import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
 
 object Constants {
@@ -22,6 +23,14 @@ object Constants {
     var nowPlayingParent:Boolean=false
     var test:FragmentManager?=null
     var songsRecyclerAdapter:SongsRecyclerAdapter?=null
+    val RQ_SKIP=0
+    val PREVIOUS_EXTRA="previous"
+    val PAUSE_EXTRA="pause"
+    val NEXT_EXTRA="next"
+    val PREVIOUS_VALUE=0
+    val PAUSE_VALUE=1
+    val NEXT_VALUE=2
+    var mainActivity:MainActivity?=null
 
     fun displayDialog(dialog:Dialog){
 

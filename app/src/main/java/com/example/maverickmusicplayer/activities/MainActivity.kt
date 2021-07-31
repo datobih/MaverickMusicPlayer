@@ -1,19 +1,26 @@
 package com.example.maverickmusicplayer.activities
 
+import android.app.Notification
+import android.app.PendingIntent
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
+import android.media.MediaMetadata
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.example.maverickmusicplayer.R
@@ -24,6 +31,7 @@ import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.handlers.PlaybackThread
 import com.example.maverickmusicplayer.interfaces.SongPlayingOnClickListener
 import com.example.maverickmusicplayer.models.Music
+import com.example.maverickmusicplayer.notifications.NotificationReceiver
 import com.example.maverickmusicplayer.utils.BlurBuilder
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,11 +52,19 @@ class MainActivity : AppCompatActivity() {
     var repeat = 'p'
     var isShuffle = false
     var shufflePos = 0
+    var testt=4
     var unshuffle = false
     var shuffledList: ArrayList<Music> = ArrayList<Music>()
     var permaMusicList: ArrayList<Music>? = null
-
-
+    var notificationManager:NotificationManagerCompat?=null
+    var notifPause=0
+    var notification:Notification?=null
+    var currentMusic:Music?=null
+    var contentPendingIntent:PendingIntent?=null
+    var pendingPrevious:PendingIntent?=null
+    var pendingNext:PendingIntent?=null
+    var pendingPause:PendingIntent?=null
+    var mediaSession:MediaSessionCompat?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,7 +73,40 @@ class MainActivity : AppCompatActivity() {
 
 setSupportActionBar(toolbar_main)
 
+        mediaSession= MediaSessionCompat(this,"tag")
 
+        val mediaMetaData=MediaMetadata.Builder()
+                .putLong(MediaMetadata.METADATA_KEY_DURATION,-1L).build()
+        mediaSession!!.setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetaData))
+
+var contentIntent= Intent(this,this::class.java)
+
+         contentPendingIntent=PendingIntent.getActivity(this,Constants.RQ_SKIP,contentIntent,0)
+
+
+
+        var previousSkipIntent=Intent(this,NotificationReceiver::class.java)
+        Constants.mainActivity=this
+        previousSkipIntent.putExtra(Constants.PREVIOUS_EXTRA,Constants.PREVIOUS_VALUE)
+         pendingPrevious=PendingIntent.getBroadcast(this,Constants.PREVIOUS_VALUE,previousSkipIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+        var nextSkipIntent=Intent(this,NotificationReceiver::class.java)
+
+        nextSkipIntent.putExtra(Constants.NEXT_EXTRA,Constants.NEXT_VALUE)
+         pendingNext=PendingIntent.getBroadcast(this,Constants.NEXT_VALUE,nextSkipIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+        var pauseIntent=Intent(this,NotificationReceiver::class.java)
+
+        pauseIntent.putExtra(Constants.PAUSE_EXTRA,Constants.PAUSE_VALUE)
+         pendingPause=PendingIntent.getBroadcast(this,Constants.PAUSE_VALUE,pauseIntent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+ notifPause=R.drawable.baseline_pause_24
+
+
+        notificationManager= NotificationManagerCompat.from(this@MainActivity)
 
 
 
@@ -214,8 +263,11 @@ setSupportActionBar(toolbar_main)
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
-
                 if (change == true) {
+
+ currentMusic=(vp_songPlaying.adapter as PagerSongPlaying).musicList[position]
+
+
 
 
                     if (isInit == true) {
@@ -239,6 +291,8 @@ setSupportActionBar(toolbar_main)
 
 
                     }
+
+                   startPlaybackService()
 
 
                     /*
@@ -433,7 +487,7 @@ setSupportActionBar(toolbar_main)
                 this,
                 R.drawable.ic_baseline_play_circle_filled_24
             )
-
+notifPause=R.drawable.baseline_play_arrow_24
             isPaused = true
             playbackThread?.isPaused = true
             playbackThread?.mediaPlayer!!.pause()
@@ -451,9 +505,14 @@ setSupportActionBar(toolbar_main)
             isPaused = false
             playbackThread?.mediaPlayer!!.start()
             playbackThread?.isPaused = false
-
+notifPause=R.drawable.baseline_pause_24
 
         }
+
+
+
+       startPlaybackService()
+
     }
 
     override fun onBackPressed() {
@@ -470,11 +529,11 @@ if(supportFragmentManager.backStackEntryCount==0){
 
    bottom_navigation.selectedItemId=R.id.nav_songs
     }
-    else{
-        super.onBackPressed()
-    }
-}
 
+}
+else{
+    super.onBackPressed()
+}
 
 
         }
@@ -562,7 +621,26 @@ return false
         return super.onOptionsItemSelected(item)
     }
 
+    fun startPlaybackService(){
+        var serviceIntent=Intent(this@MainActivity,PlaybackService::class.java)
+        startService(serviceIntent)
+
+    }
+
+    fun stopPlayBackService(){
+        var serviceIntent=Intent(this@MainActivity,PlaybackService::class.java)
+serviceIntent.setAction("end")
+        startService(serviceIntent)
+
+    }
+
     override fun onDestroy() {
+        playbackThread?.endThread = true
+
+
+        playbackThread=null
+
+        stopPlayBackService()
         super.onDestroy()
 
 

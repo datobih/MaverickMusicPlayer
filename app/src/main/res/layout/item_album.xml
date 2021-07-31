@@ -13,7 +13,7 @@
         android:id="@+id/imb_albumCover"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        tools:background="@color/black"
+        android:background="@drawable/songs_placeholder"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         ></ImageView>

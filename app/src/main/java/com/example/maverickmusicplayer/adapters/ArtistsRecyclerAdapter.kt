@@ -30,11 +30,12 @@ var artistOnClickListener:ArtistOnClickListener?=null
 
             holder.artCover.setImageBitmap(artistList[position].artistArt)
         }
-
         else{
-            var drawable=context.resources.getDrawable(R.drawable.songs_placeholder)
-            holder.artCover.setImageDrawable(drawable)
+
+            var drawable=context.resources.getDrawable(R.drawable.artist_placeholder)
+            holder.artCover.background=drawable
         }
+
         holder.artistTitle.text=title
 
 

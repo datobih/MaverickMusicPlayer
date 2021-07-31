@@ -3,9 +3,11 @@
     package="com.example.maverickmusicplayer">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE"></uses-permission>
 
     <application
+        android:name=".notifications.App"
+
         android:allowBackup="true"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaverickMusicPlayer">
         <activity android:name=".activities.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/CustomNoActionBar"
     >
             <intent-filter>
@@ -25,6 +28,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <service android:name=".activities.PlaybackService">
+
+        </service>
+        <receiver android:name=".notifications.NotificationReceiver"></receiver>
     </application>
 
 </manifest>

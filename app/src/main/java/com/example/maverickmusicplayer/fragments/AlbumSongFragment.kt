@@ -2,12 +2,10 @@ package com.example.maverickmusicplayer.fragments
 
 import android.os.AsyncTask
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
@@ -19,7 +17,6 @@ import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_album_song.*
-import kotlinx.android.synthetic.main.fragment_songs.*
 
 
 class AlbumSongFragment : Fragment() {
@@ -56,8 +53,12 @@ class AlbumSongFragment : Fragment() {
 
         }
         else{
-            imv_albumInfoCover.setImageDrawable(resources.getDrawable(R.drawable.songs_placeholder))
+
+                var drawable=context?.resources?.getDrawable(R.drawable.album_placeholder)
+                imv_albumInfoCover.background=drawable
+
         }
+
 
         tv_albumInfoTitle.text=album?.name
         tv_albumInfoArtist.text="By: ${album?.artist}"

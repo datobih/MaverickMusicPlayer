@@ -1,18 +1,14 @@
 package com.example.maverickmusicplayer.adapters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.interfaces.AlbumOnClickListener
 import com.example.maverickmusicplayer.models.Album
-import com.example.maverickmusicplayer.models.Music
 import kotlinx.android.synthetic.main.item_album.view.*
-import kotlinx.android.synthetic.main.item_music.view.*
 
 class AlbumRecyclerAdapter(val context: Context, val albumList: ArrayList<Album>) : RecyclerView.Adapter<AlbumRecyclerAdapter.ViewHolder>() {
 
@@ -29,8 +25,8 @@ var albumOnClickListener:AlbumOnClickListener?=null
         }
 
         else{
-            var drawable=context.resources.getDrawable(R.drawable.songs_placeholder)
-            holder.albumArt.setImageDrawable(drawable)
+            var drawable=context.resources.getDrawable(R.drawable.album_placeholder)
+            holder.albumArt.background=drawable
         }
 
         holder.albumTitle.text=albumList[position].name

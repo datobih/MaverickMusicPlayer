@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
-import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.models.Music
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_now_playing.view.*
-import kotlinx.android.synthetic.main.item_song_playing.view.*
 
 class PagerNowPlaying(val context: Context, val musicList:ArrayList<Music>):RecyclerView.Adapter<PagerNowPlaying.ViewHolder>()  {
 
@@ -24,7 +21,11 @@ class PagerNowPlaying(val context: Context, val musicList:ArrayList<Music>):Recy
     }
 
     override fun onBindViewHolder(holder: PagerNowPlaying.ViewHolder, position: Int) {
-      holder.nowPlayingCover.setImageBitmap(musicList[position].albumArt)
+        if(musicList[position].albumArt!=null) {
+            holder.nowPlayingCover.setImageBitmap(musicList[position].albumArt)
+        }
+
+
 
     }
 

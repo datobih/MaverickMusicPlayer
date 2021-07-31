@@ -13,7 +13,7 @@
 </item>
 
     <item
-android:drawable="@drawable/ic_baseline_music_note_15"
+android:drawable="@drawable/ic_artist"
 
 
         ></item>

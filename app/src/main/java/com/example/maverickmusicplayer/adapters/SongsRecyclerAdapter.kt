@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
@@ -36,15 +37,12 @@ var songOnClickListener:SongOnClickListener?=null
 
         title=sb.toString()
 
-        if(musicList[position].albumArt!=null){
+
 
             holder.songCover.setImageBitmap(musicList[position].albumArt)
-        }
 
-        else{
-            var drawable=context.resources.getDrawable(R.drawable.songs_placeholder)
-            holder.songCover.setImageDrawable(drawable)
-        }
+
+
         holder.songTitle.text=title
         holder.songArtist.text=musicList[position].artist
 
@@ -148,7 +146,7 @@ else {
 
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         var songTitle=view.tv_songTitle
-        var songCover=view.imv_songCover
+        var songCover: ImageView =view.imv_songCover
         var songArtist=view.tv_songArtist
         var songLayout=view.ll_songItem
 
