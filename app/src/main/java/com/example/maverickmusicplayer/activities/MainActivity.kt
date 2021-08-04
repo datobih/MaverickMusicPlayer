@@ -66,12 +66,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setTheme(R.style.CustomNoActionBar1)
 
         setContentView(R.layout.activity_main)
 
 setSupportActionBar(toolbar_main)
 
+window.decorView.apply {
 
+
+    systemUiVisibility =  View.SYSTEM_UI_FLAG_FULLSCREEN
+}
         mediaSession= MediaSessionCompat(this,"tag")
 
         val mediaMetaData=MediaMetadata.Builder()

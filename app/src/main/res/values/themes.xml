@@ -24,6 +24,15 @@
         <item name="android:colorEdgeEffect">#DCFFFFFF</item>
     </style>
 
+    <style name="CustomNoActionBar1" parent="Theme.MaterialComponents.Light.NoActionBar"
+
+        >
+
+        <item name="android:statusBarColor">#2E318D</item>
+
+        <item name="android:colorEdgeEffect">#DCFFFFFF</item>
+    </style>
+
 
     <style name="ToolBarTheme" parent="Theme.MaterialComponents">
         <item

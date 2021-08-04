@@ -53,7 +53,7 @@ class DeviceMediaHandler(val context: Context) {
 
 
     val albumProjection = arrayOf(
-            MediaStore.Audio.Albums.ALBUM_ID,
+            MediaStore.Audio.Albums._ID,
             MediaStore.Audio.Albums.ALBUM,
             MediaStore.Audio.Albums.ALBUM_ART,
             MediaStore.Audio.Albums.ARTIST,
@@ -199,7 +199,7 @@ var tempSelection=songSelection
 
         query.use { cursor ->
 
-            val idColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ID)
+            val idColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Albums._ID)
             val nameColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM)
             val albumArtColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART)
             val artistColumn = cursor?.getColumnIndexOrThrow(MediaStore.Audio.Albums.ARTIST)

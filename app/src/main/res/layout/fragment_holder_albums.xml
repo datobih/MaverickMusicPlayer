@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HolderAlbumsFragment"
     android:id="@+id/holder_fragment_album"
+
     >
 
 

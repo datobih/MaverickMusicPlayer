@@ -42,40 +42,47 @@ app:title="Library"
         android:layout_weight="1"
         ></androidx.viewpager2.widget.ViewPager2>
 
-<LinearLayout
-    android:id="@+id/ll_songPlaying"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@drawable/transparent_rect"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_songPlaying"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_rect"
+            android:orientation="horizontal"
 android:visibility="gone"
-    >
+            >
 
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_songPlaying"
-        android:layout_width="330dp"
-        android:layout_height="70dp"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_songPlaying"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/imb_pause_play"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        ></androidx.viewpager2.widget.ViewPager2>
+            </androidx.viewpager2.widget.ViewPager2>
 
 
+            <ImageButton
+                android:id="@+id/imb_pause_play"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
 
+                android:layout_marginTop="10dp"
+                android:background="@drawable/baseline_pause_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/vp_songPlaying"
 
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+            </ImageButton>
 
-    <ImageButton
-        android:id="@+id/imb_pause_play"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/baseline_pause_24"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        ></ImageButton>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
-
-    <View
+        <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/black"
@@ -97,13 +104,13 @@ android:visibility="gone"
     </LinearLayout>
 
 
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/ll_nowPlaying"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="5dp"
 tools:visibility="visible"
     android:visibility="gone"
     android:background="@drawable/now_playing_theme"
@@ -114,6 +121,10 @@ tools:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:orientation="horizontal"
+    app:layout_constraintTop_toTopOf="parent"
+
+ android:layout_marginTop="20dp"
+
 >
 
     <ImageButton
@@ -121,7 +132,8 @@ tools:visibility="visible"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/ic_baseline_keyboard_arrow_down_24"
-android:layout_centerVertical="true"
+
+        android:layout_marginTop="10dp"
 
 
         ></ImageButton>
@@ -170,10 +182,15 @@ android:layout_toRightOf="@id/tv_nowPlaying_parentTitleHolder"
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_nowPlaying"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="40dp"
 android:layout_below="@id/ll_top_nowPlaying"
 
-        android:layout_gravity="center_horizontal"
+
+        app:layout_constraintTop_toBottomOf="@id/ll_top_nowPlaying"
+        app:layout_constraintBottom_toTopOf="@id/tv_nowPlaying_songTitle"
+
+
         ></androidx.viewpager2.widget.ViewPager2>
 
 
@@ -182,11 +199,11 @@ android:layout_below="@id/ll_top_nowPlaying"
         android:id="@+id/tv_nowPlaying_songTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="HIIIII"
         android:gravity="center"
         android:textColor="#EAEAEA"
-        android:textSize="23dp"
+        android:textSize="19dp"
         android:textStyle="bold"
         android:singleLine="true"
         android:ellipsize="marquee"
@@ -194,9 +211,11 @@ android:layout_below="@id/ll_top_nowPlaying"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:scrollHorizontally="true"
-        android:layout_below="@id/vp_nowPlaying"
+
 
         android:fontFamily="@font/montserrat"
+        app:layout_constraintTop_toBottomOf="@id/vp_nowPlaying"
+        app:layout_constraintBottom_toTopOf="@id/tv_nowPlaying_songArtist"
         ></TextView>
 
 
@@ -209,43 +228,55 @@ android:layout_below="@id/ll_top_nowPlaying"
         android:text="HIIIII"
         android:gravity="center"
         android:textColor="#EAEAEA"
-        android:textSize="17dp"
-android:layout_below="@id/tv_nowPlaying_songTitle"
+        android:textSize="14dp"
+app:layout_constraintTop_toBottomOf="@id/tv_nowPlaying_songTitle"
+        app:layout_constraintBottom_toTopOf="@id/ll_duration"
         ></TextView>
 
-    <TextView
-        android:id="@+id/tv_nowPlaying_currentDuration"
+    <RelativeLayout
+        android:id="@+id/ll_duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="0:00"
+        app:layout_constraintTop_toBottomOf="@id/tv_nowPlaying_songArtist"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/sb_nowPlaying"
+        >
+        <TextView
+            android:id="@+id/tv_nowPlaying_currentDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="0:00"
 
-        android:fontFamily="@font/montserrat"
-        android:textColor="#EAEAEA"
-        android:textSize="14dp"
+            android:fontFamily="@font/montserrat"
+            android:textColor="#EAEAEA"
+            android:textSize="11dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+android:layout_alignParentLeft="true"
+            ></TextView>
 
-        android:layout_below="@id/tv_nowPlaying_songArtist"
 
-        ></TextView>
+        <TextView
+            android:id="@+id/tv_nowPlaying_totalDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="2:50"
+            android:gravity="right"
+            android:layout_marginRight="15dp"
+            android:textColor="#EAEAEA"
+            android:textSize="11dp"
+
+            android:fontFamily="@font/montserrat"
+            app:layout_constraintRight_toRightOf="parent"
+           android:layout_alignParentRight="true"
+            ></TextView>
 
 
-    <TextView
-        android:id="@+id/tv_nowPlaying_totalDuration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:text="2:50"
-        android:gravity="right"
-        android:layout_marginRight="15dp"
-        android:textColor="#EAEAEA"
-        android:textSize="14dp"
-
-        android:fontFamily="@font/montserrat"
-        android:layout_below="@id/tv_nowPlaying_songArtist"
-
-        ></TextView>
+    </RelativeLayout>
 
 
 
@@ -256,20 +287,23 @@ android:layout_below="@id/tv_nowPlaying_songTitle"
         android:layout_marginTop="10dp"
         android:progressBackgroundTint="@color/white"
 
-android:layout_below="@id/tv_nowPlaying_currentDuration"
+
         android:thumbTint="@color/white"
 
         android:progressTint="#EFEFEF"
+        app:layout_constraintTop_toBottomOf="@id/ll_duration"
+        app:layout_constraintBottom_toTopOf="@id/navigate_on_play"
         ></SeekBar>
 
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/navigate_on_play"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
 android:layout_marginBottom="70dp"
 
-    android:layout_alignParentBottom="true"
-
+    app:layout_constraintTop_toBottomOf="@id/sb_nowPlaying"
+    app:layout_constraintBottom_toBottomOf="parent"
     >
 <ImageButton
     android:id="@+id/imb_nowPlaying_skipPrevious"
@@ -350,6 +384,6 @@ android:layout_marginBottom="70dp"
 
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>
