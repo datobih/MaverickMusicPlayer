@@ -3,26 +3,19 @@ package com.example.maverickmusicplayer.fragments
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
-import com.example.maverickmusicplayer.adapters.AlbumRecyclerAdapter
 import com.example.maverickmusicplayer.adapters.ArtistsRecyclerAdapter
 import com.example.maverickmusicplayer.constants.Constants
 import com.example.maverickmusicplayer.handlers.DeviceMediaHandler
 import com.example.maverickmusicplayer.interfaces.ArtistOnClickListener
-import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Artist
-import com.example.maverickmusicplayer.models.Music
-import kotlinx.android.synthetic.main.fragment_albums.*
 import kotlinx.android.synthetic.main.fragment_artist.*
-import kotlinx.android.synthetic.main.fragment_holder_artists.*
-import kotlin.concurrent.fixedRateTimer
 
 
 class ArtistFragment : Fragment() {
@@ -43,6 +36,13 @@ class ArtistFragment : Fragment() {
 
         task=object : AsyncTask<Void, Void, ArrayList<Artist>>(){
 
+
+            override fun onPreExecute() {
+
+                ll_artistLoading.visibility=View.VISIBLE
+                super.onPreExecute()
+            }
+
             @RequiresApi(Build.VERSION_CODES.Q)
             override fun doInBackground(vararg params: Void?): ArrayList<Artist> {
                 var artists = DeviceMediaHandler(requireContext()).getArtists()
@@ -52,6 +52,7 @@ class ArtistFragment : Fragment() {
 
             override fun onPostExecute(result: ArrayList<Artist>?) {
                 super.onPostExecute(result)
+                ll_artistLoading.visibility=View.GONE
                 var adapter= ArtistsRecyclerAdapter(requireContext(),result!!)
                 rv_artists.layoutManager= LinearLayoutManager(requireContext())
                 adapter.setOnArtistClicked(object:ArtistOnClickListener{

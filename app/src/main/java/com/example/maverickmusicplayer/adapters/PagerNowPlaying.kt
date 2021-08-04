@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.models.Music
@@ -23,6 +24,9 @@ class PagerNowPlaying(val context: Context, val musicList:ArrayList<Music>):Recy
     override fun onBindViewHolder(holder: PagerNowPlaying.ViewHolder, position: Int) {
         if(musicList[position].albumArt!=null) {
             holder.nowPlayingCover.setImageBitmap(musicList[position].albumArt)
+        }
+        else{
+  holder.nowPlayingCover.background=ContextCompat.getDrawable(context,R.drawable.songs_placeholder)
         }
 
 

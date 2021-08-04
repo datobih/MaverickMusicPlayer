@@ -21,8 +21,9 @@ var albumOnClickListener:AlbumOnClickListener?=null
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(albumList[position].art!=null){
 
-            holder.albumArt.setImageBitmap(albumList[position].art)
+            holder.albumArt.setImageURI(albumList[position].art)
         }
+
 
         else{
             var drawable=context.resources.getDrawable(R.drawable.album_placeholder)

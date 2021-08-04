@@ -49,7 +49,8 @@ class AlbumSongFragment : Fragment() {
         }
 
         if(album?.art!=null) {
-            imv_albumInfoCover.setImageBitmap(album?.art)
+
+            imv_albumInfoCover.setImageURI(album?.art)
 
         }
         else{

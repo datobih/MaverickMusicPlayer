@@ -1,6 +1,5 @@
 package com.example.maverickmusicplayer.models
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Parcel
 import android.os.Parcelable
@@ -10,7 +9,7 @@ data class Album(
         val id: Long,
         val name:String?,
         val artist:String?,
-        val art:Bitmap?,
+        val art: Uri?,
         val numberOfSongs:Int,
 
 
@@ -19,7 +18,7 @@ data class Album(
                 parcel.readLong(),
                 parcel.readString(),
                 parcel.readString(),
-                parcel.readParcelable(Bitmap::class.java.classLoader),
+                parcel.readParcelable(Uri::class.java.classLoader),
                 parcel.readInt()
         ) {
         }

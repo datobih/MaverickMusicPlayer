@@ -6,15 +6,12 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import android.provider.MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI
-import android.util.Size
-import androidx.annotation.RequiresApi
 import com.example.maverickmusicplayer.models.Album
 import com.example.maverickmusicplayer.models.Artist
 import com.example.maverickmusicplayer.models.Music
-import java.lang.Exception
 
 class DeviceMediaHandler(val context: Context) {
 
@@ -185,10 +182,11 @@ var tempSelection=songSelection
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+
     fun getAlbums( artist:String?): ArrayList<Album> {
         var tempSelection:String?=null
         var tempSelectionArg:Array<String>?=null
+         var albumArtUri: Uri?=null
         if(!artist.isNullOrEmpty()){
             tempSelection="${MediaStore.Audio.Albums.ARTIST} LIKE ?"
              tempSelectionArg=arrayOf(artist)
@@ -217,20 +215,17 @@ var tempSelection=songSelection
                 val artist = cursor.getString(artistColumn!!)
                 val noOfSongs = cursor.getInt(noOfSongsColumn!!)
 
+                var directoryArtUri=Uri.parse("content://media/external/audio/albumart")
 
-                var albumArtUri = ContentUris.withAppendedId(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, id)
-
-                try {
-                    bitmap = context.contentResolver.loadThumbnail(albumArtUri, Size(1024, 1024), null)
-                } catch (e: Exception) {
-                    bitmap = null
-                }
+                var albumArtUri = ContentUris.withAppendedId(directoryArtUri, id)
 
 
 
 
 
-                albumList.add(Album(id, name, artist, bitmap, noOfSongs))
+
+
+                albumList.add(Album(id, name, artist, albumArtUri, noOfSongs))
 
             }
 
@@ -240,7 +235,7 @@ var tempSelection=songSelection
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+
     fun getArtists(): ArrayList<Artist> {
 
         var query = context.contentResolver.query(artistCollection, artistProjection, null, null, null)
