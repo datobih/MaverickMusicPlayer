@@ -72,11 +72,6 @@ class MainActivity : AppCompatActivity() {
 
 setSupportActionBar(toolbar_main)
 
-window.decorView.apply {
-
-
-    systemUiVisibility =  View.SYSTEM_UI_FLAG_FULLSCREEN
-}
         mediaSession= MediaSessionCompat(this,"tag")
 
         val mediaMetaData=MediaMetadata.Builder()
@@ -455,7 +450,9 @@ var contentIntent= Intent(this,this::class.java)
     fun setPlayingAdapter(musicList: ArrayList<Music>) {
 
 
-        var adapter = PagerSongPlaying(this, musicList)
+        val mMusicList=ArrayList<Music>()
+        mMusicList.addAll(musicList)
+        var adapter = PagerSongPlaying(this, mMusicList)
 
         adapter.setSongPlayingOnClickListener(object : SongPlayingOnClickListener {
             override fun onItemClicked(position: Int) {
@@ -465,7 +462,7 @@ var contentIntent= Intent(this,this::class.java)
 
                 var adapter = PagerNowPlaying(
                     this@MainActivity,
-                    (vp_songPlaying.adapter as PagerSongPlaying).musicList
+                    mMusicList
                 )
                 vp_nowPlaying.adapter = adapter
                 vp_nowPlaying.setCurrentItem(position, false)
@@ -605,6 +602,7 @@ return true
             override fun onQueryTextChange(newText: String?): Boolean {
 
                 Constants.songsRecyclerAdapter?.exampleFilter?.filter(newText)
+
 return false
             }
 

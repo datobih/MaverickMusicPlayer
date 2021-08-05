@@ -11,6 +11,7 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.maverickmusicplayer.R
 import com.example.maverickmusicplayer.activities.MainActivity
 import com.example.maverickmusicplayer.adapters.SongsRecyclerAdapter
@@ -76,6 +77,18 @@ object Constants {
         }
 
         return check
+    }
+
+
+    class CustomLinearLayout: LinearLayoutManager(mainActivity) {
+
+        override fun supportsPredictiveItemAnimations(): Boolean {
+            return false
+        }
+
+
+
+
     }
 
 }

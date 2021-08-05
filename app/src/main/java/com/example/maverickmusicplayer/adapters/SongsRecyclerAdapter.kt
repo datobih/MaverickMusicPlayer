@@ -21,7 +21,7 @@ class SongsRecyclerAdapter(val context: Context,val musicList:ArrayList<Music>,v
 val completeMusicList=ArrayList<Music>(musicList)
 var connected=false
 var songOnClickListener:SongOnClickListener?=null
-
+    var pos:Int?=null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_music,parent,false))
 
@@ -48,12 +48,14 @@ var songOnClickListener:SongOnClickListener?=null
 
 
 
+
         holder.songLayout.setOnClickListener {
 
 
               if(context is MainActivity){
 //before here
                  context.setPlayingAdapter(musicList)
+
 
                     context.ll_songPlaying.visibility=View.VISIBLE
 
@@ -122,6 +124,7 @@ else {
                 for (i in completeMusicList) {
 
                     if (i.name!!.toLowerCase().contains(searchPattern)) {
+                         pos=completeMusicList.indexOf(i)
                         filteredList.add(i)
                     }
                 }
@@ -136,7 +139,9 @@ else {
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
 
            musicList.clear()
+
            musicList.addAll(results?.values as ArrayList<Music>)
+
             notifyDataSetChanged()
 
         }

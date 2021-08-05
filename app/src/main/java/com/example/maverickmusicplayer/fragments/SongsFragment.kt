@@ -86,6 +86,7 @@ val dialog:Dialog= Dialog(requireContext())
     }
     fun refreshSongs(){
         var songsRecyclerAdapter:SongsRecyclerAdapter?=null
+
         if(artist==null) {
             songsRecyclerAdapter = SongsRecyclerAdapter(requireContext(), musicList, false)
 
@@ -125,6 +126,7 @@ val dialog:Dialog= Dialog(requireContext())
     }
 
 
+
     override fun onDestroy() {
         super.onDestroy()
         task!!.cancel(true)
@@ -134,7 +136,7 @@ val dialog:Dialog= Dialog(requireContext())
 
 
 
-    }
+}
 
 
 
